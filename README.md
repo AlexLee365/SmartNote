@@ -6,5 +6,3 @@
 
 Simple!  Take a photo -> App will extract text from photos -> Copy text to Memo -> Can translate it to other language.
 
-
-Did you Receive?
