@@ -11,8 +11,10 @@
 		43017B3722C2163E001B7D69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43017B3622C2163E001B7D69 /* AppDelegate.swift */; };
 		43017B3E22C2163F001B7D69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43017B3D22C2163F001B7D69 /* Assets.xcassets */; };
 		43017B4122C2163F001B7D69 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43017B3F22C2163F001B7D69 /* LaunchScreen.storyboard */; };
+
 		43017B4922C3429E001B7D69 /* MemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43017B4822C3429E001B7D69 /* MemoViewController.swift */; };
 		43017B4E22C3456B001B7D69 /* MemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43017B4D22C3456B001B7D69 /* MemoView.swift */; };
+
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		43017B4822C3429E001B7D69 /* MemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoViewController.swift; sourceTree = "<group>"; };
 		43017B4D22C3456B001B7D69 /* MemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoView.swift; sourceTree = "<group>"; };
 		6E1F3F259C18C7104FEEC827 /* Pods_SmartNote.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SmartNote.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D25093722C33E87009A5A41 /* MemoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoListViewController.swift; sourceTree = "<group>"; };
+		8D25093922C34047009A5A41 /* MemoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoListCell.swift; sourceTree = "<group>"; };
 		D7B6A93DF23AF7CBA28AB018 /* Pods-SmartNote.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SmartNote.release.xcconfig"; path = "Target Support Files/Pods-SmartNote/Pods-SmartNote.release.xcconfig"; sourceTree = "<group>"; };
 		EF214509A2C9A846F1F22B9A /* Pods-SmartNote.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SmartNote.debug.xcconfig"; path = "Target Support Files/Pods-SmartNote/Pods-SmartNote.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -62,11 +66,14 @@
 			isa = PBXGroup;
 			children = (
 				43017B3622C2163E001B7D69 /* AppDelegate.swift */,
+
 				43017B4A22C342BE001B7D69 /* Model */,
 				43017B4C22C342CE001B7D69 /* View */,
 				43017B4B22C342C2001B7D69 /* Controller */,
 				43017B3D22C2163F001B7D69 /* Assets.xcassets */,
+
 				43017B3F22C2163F001B7D69 /* LaunchScreen.storyboard */,
+				43017B3D22C2163F001B7D69 /* Assets.xcassets */,
 				43017B4222C2163F001B7D69 /* Info.plist */,
 			);
 			path = SmartNote;
@@ -101,6 +108,37 @@
 				6E1F3F259C18C7104FEEC827 /* Pods_SmartNote.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8D25093B22C3404C009A5A41 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8D25093E22C34096009A5A41 /* Cells */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8D25093C22C34059009A5A41 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				8D25093722C33E87009A5A41 /* MemoListViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		8D25093D22C3406C009A5A41 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		8D25093E22C34096009A5A41 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				8D25093922C34047009A5A41 /* MemoListCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		E51DE340264481BA59ABEA22 /* Pods */ = {
@@ -231,8 +269,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+
 				43017B4922C3429E001B7D69 /* MemoViewController.swift in Sources */,
 				43017B4E22C3456B001B7D69 /* MemoView.swift in Sources */,
+
 				43017B3722C2163E001B7D69 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
