@@ -87,6 +87,26 @@ extension MemoListViewController: UITableViewDataSource {
         
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let deleteAction = UIContextualAction(style: .destructive, title: "삭제") { (ac: UIContextualAction, view: UIView, success: (Bool) -> Void) in
+            
+            success(true)
+        }
+        
+        deleteAction.image = UIImage(named: "trash")
+        
+        let pinTopAction = UIContextualAction(style: .normal, title: "핀 고정") { (ac: UIContextualAction, view: UIView, success: (Bool) -> Void) in
+            
+            success(true)
+        }
+        
+        pinTopAction.image = UIImage(named: "pin")
+        pinTopAction.backgroundColor = .black
+        
+        return UISwipeActionsConfiguration(actions: [deleteAction, pinTopAction])
+    }
 }
 
 // MARK: - UITableViewDelegate
