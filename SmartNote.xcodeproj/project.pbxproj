@@ -104,8 +104,8 @@
 		43017B4C22C342CE001B7D69 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				43017B5322C36790001B7D69 /* Cell */,
 				43017B4D22C3456B001B7D69 /* MemoView.swift */,
+				43017B5322C36790001B7D69 /* Cell */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -243,12 +243,14 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SmartNote/Pods-SmartNote-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/RSSelectionMenu/RSSelectionMenu.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RSSelectionMenu.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
