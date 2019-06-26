@@ -8,6 +8,7 @@
 
 import UIKit
 import MobileCoreServices
+import Alamofire
 
 class MemoViewController: UIViewController {
     
@@ -36,6 +37,8 @@ class MemoViewController: UIViewController {
         
         
         memoView.cameraBtn.addTarget(self, action: #selector(cameraBtnDidTap(_:)), for: .touchUpInside)
+        memoView.albumBtn.addTarget(self, action: #selector(albumBtnDidTap(_:)), for: .touchUpInside)
+        memoView.translateBtn.addTarget(self, action: #selector(translateBtnDidTap(_:)), for: .touchUpInside)
         
         let rightBarBtn = UIBarButtonItem(title: "수정", style: .plain, target: self, action: #selector(rightBarBtnDidTap(_:)))
         
@@ -61,6 +64,53 @@ class MemoViewController: UIViewController {
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             present(alert, animated: true, completion: nil)
         }
+    }
+    
+    @objc func albumBtnDidTap(_ sender: UIButton) {
+        presentImagePickerController(withSourceType: .photoLibrary)
+    }
+    
+    @objc func translateBtnDidTap(_ sender: UIButton) {
+        let queryValue = memoView.textView.text ?? ""
+        var languageTranslateFrom = "kr"
+        var languageTranslateTo = "en"
+        
+        let urlString = "https://kapi.kakao.com/v1/translation/translate?"
+            + "app_key=e4e4abd79709fdbc4e04e732818ac6f1&"
+            + "src_lang=\(languageTranslateFrom)&"
+            + "target_lang=\(languageTranslateTo)&"
+            + "query=\(queryValue)"
+        
+        guard let translateAPIString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+            let convertUrl = URL(string: translateAPIString)
+            else { print("convertUrl failed"); return }
+        
+        AF.request(convertUrl).responseJSON { (response) in
+            switch response.result {
+            case .success(let value):
+                
+                guard let dicValue = value as? [String: Any], let textDataArray = dicValue["translated_text"] as? [[String]]
+                    else { print("textDataArray convert error"); return }
+                print("🔵🔵🔵  ", textDataArray)
+                
+                var text = ""
+                textDataArray.map{ $0.first ?? ""}.forEach{
+                    text += $0
+                }
+                print("🔵🔵🔵  ", text)
+                
+                
+                self.memoView.textView.text = text
+                
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
+        
+        
+        
+        
     }
     
     @objc func rightBarBtnDidTap(_ sender: UIBarButtonItem) {
