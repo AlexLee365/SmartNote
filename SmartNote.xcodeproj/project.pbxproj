@@ -11,8 +11,10 @@
 		43017B3722C2163E001B7D69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43017B3622C2163E001B7D69 /* AppDelegate.swift */; };
 		43017B3E22C2163F001B7D69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43017B3D22C2163F001B7D69 /* Assets.xcassets */; };
 		43017B4122C2163F001B7D69 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43017B3F22C2163F001B7D69 /* LaunchScreen.storyboard */; };
-		8D25093822C33E87009A5A41 /* MemoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D25093722C33E87009A5A41 /* MemoListViewController.swift */; };
-		8D25093A22C34047009A5A41 /* MemoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D25093922C34047009A5A41 /* MemoListCell.swift */; };
+
+		43017B4922C3429E001B7D69 /* MemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43017B4822C3429E001B7D69 /* MemoViewController.swift */; };
+		43017B4E22C3456B001B7D69 /* MemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43017B4D22C3456B001B7D69 /* MemoView.swift */; };
+
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +23,8 @@
 		43017B3D22C2163F001B7D69 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		43017B4022C2163F001B7D69 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		43017B4222C2163F001B7D69 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		43017B4822C3429E001B7D69 /* MemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoViewController.swift; sourceTree = "<group>"; };
+		43017B4D22C3456B001B7D69 /* MemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoView.swift; sourceTree = "<group>"; };
 		6E1F3F259C18C7104FEEC827 /* Pods_SmartNote.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SmartNote.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D25093722C33E87009A5A41 /* MemoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoListViewController.swift; sourceTree = "<group>"; };
 		8D25093922C34047009A5A41 /* MemoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoListCell.swift; sourceTree = "<group>"; };
@@ -62,14 +66,40 @@
 			isa = PBXGroup;
 			children = (
 				43017B3622C2163E001B7D69 /* AppDelegate.swift */,
-				8D25093D22C3406C009A5A41 /* Model */,
-				8D25093B22C3404C009A5A41 /* View */,
-				8D25093C22C34059009A5A41 /* Controller */,
+
+				43017B4A22C342BE001B7D69 /* Model */,
+				43017B4C22C342CE001B7D69 /* View */,
+				43017B4B22C342C2001B7D69 /* Controller */,
+				43017B3D22C2163F001B7D69 /* Assets.xcassets */,
+
 				43017B3F22C2163F001B7D69 /* LaunchScreen.storyboard */,
 				43017B3D22C2163F001B7D69 /* Assets.xcassets */,
 				43017B4222C2163F001B7D69 /* Info.plist */,
 			);
 			path = SmartNote;
+			sourceTree = "<group>";
+		};
+		43017B4A22C342BE001B7D69 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		43017B4B22C342C2001B7D69 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				43017B4822C3429E001B7D69 /* MemoViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		43017B4C22C342CE001B7D69 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				43017B4D22C3456B001B7D69 /* MemoView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		677D2CB2662377DB7049B1E7 /* Frameworks */ = {
@@ -239,8 +269,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D25093822C33E87009A5A41 /* MemoListViewController.swift in Sources */,
-				8D25093A22C34047009A5A41 /* MemoListCell.swift in Sources */,
+
+				43017B4922C3429E001B7D69 /* MemoViewController.swift in Sources */,
+				43017B4E22C3456B001B7D69 /* MemoView.swift in Sources */,
+
 				43017B3722C2163E001B7D69 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -387,7 +419,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "-0625.SmartNote";
+				PRODUCT_BUNDLE_IDENTIFIER = kr.AlexLee0427.SmartNote;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -406,7 +438,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "-0625.SmartNote";
+				PRODUCT_BUNDLE_IDENTIFIER = kr.AlexLee0427.SmartNote;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

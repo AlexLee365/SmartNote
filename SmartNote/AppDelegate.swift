@@ -17,16 +17,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         window = UIWindow(frame: UIScreen.main.bounds)
-        
         window?.backgroundColor = .white
         
-        let navi = UINavigationController(rootViewController: MemoListViewController())
+        let memoVC = MemoViewController()
+        let navigateController = UINavigationController(rootViewController: memoVC)
         
-        window?.rootViewController = navi
+        
+        window?.rootViewController = navigateController
         window?.makeKeyAndVisible()
-        
+    
         return true
     }
+
+
+
 
 }
 
