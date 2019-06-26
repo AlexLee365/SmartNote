@@ -9,21 +9,21 @@
 /* Begin PBXBuildFile section */
 		082B12323601E0A34C8B3575 /* Pods_SmartNote.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E1F3F259C18C7104FEEC827 /* Pods_SmartNote.framework */; };
 		43017B3722C2163E001B7D69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43017B3622C2163E001B7D69 /* AppDelegate.swift */; };
-		43017B3922C2163E001B7D69 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43017B3822C2163E001B7D69 /* ViewController.swift */; };
-		43017B3C22C2163E001B7D69 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43017B3A22C2163E001B7D69 /* Main.storyboard */; };
 		43017B3E22C2163F001B7D69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43017B3D22C2163F001B7D69 /* Assets.xcassets */; };
 		43017B4122C2163F001B7D69 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43017B3F22C2163F001B7D69 /* LaunchScreen.storyboard */; };
+		8D25093822C33E87009A5A41 /* MemoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D25093722C33E87009A5A41 /* MemoListViewController.swift */; };
+		8D25093A22C34047009A5A41 /* MemoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D25093922C34047009A5A41 /* MemoListCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		43017B3322C2163E001B7D69 /* SmartNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43017B3622C2163E001B7D69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		43017B3822C2163E001B7D69 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		43017B3B22C2163E001B7D69 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		43017B3D22C2163F001B7D69 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		43017B4022C2163F001B7D69 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		43017B4222C2163F001B7D69 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6E1F3F259C18C7104FEEC827 /* Pods_SmartNote.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SmartNote.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D25093722C33E87009A5A41 /* MemoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoListViewController.swift; sourceTree = "<group>"; };
+		8D25093922C34047009A5A41 /* MemoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoListCell.swift; sourceTree = "<group>"; };
 		D7B6A93DF23AF7CBA28AB018 /* Pods-SmartNote.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SmartNote.release.xcconfig"; path = "Target Support Files/Pods-SmartNote/Pods-SmartNote.release.xcconfig"; sourceTree = "<group>"; };
 		EF214509A2C9A846F1F22B9A /* Pods-SmartNote.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SmartNote.debug.xcconfig"; path = "Target Support Files/Pods-SmartNote/Pods-SmartNote.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -62,10 +62,11 @@
 			isa = PBXGroup;
 			children = (
 				43017B3622C2163E001B7D69 /* AppDelegate.swift */,
-				43017B3822C2163E001B7D69 /* ViewController.swift */,
-				43017B3A22C2163E001B7D69 /* Main.storyboard */,
-				43017B3D22C2163F001B7D69 /* Assets.xcassets */,
+				8D25093D22C3406C009A5A41 /* Model */,
+				8D25093B22C3404C009A5A41 /* View */,
+				8D25093C22C34059009A5A41 /* Controller */,
 				43017B3F22C2163F001B7D69 /* LaunchScreen.storyboard */,
+				43017B3D22C2163F001B7D69 /* Assets.xcassets */,
 				43017B4222C2163F001B7D69 /* Info.plist */,
 			);
 			path = SmartNote;
@@ -79,13 +80,43 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		8D25093B22C3404C009A5A41 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8D25093E22C34096009A5A41 /* Cells */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		8D25093C22C34059009A5A41 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				8D25093722C33E87009A5A41 /* MemoListViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		8D25093D22C3406C009A5A41 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		8D25093E22C34096009A5A41 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				8D25093922C34047009A5A41 /* MemoListCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		E51DE340264481BA59ABEA22 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
 				EF214509A2C9A846F1F22B9A /* Pods-SmartNote.debug.xcconfig */,
 				D7B6A93DF23AF7CBA28AB018 /* Pods-SmartNote.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -151,7 +182,6 @@
 			files = (
 				43017B4122C2163F001B7D69 /* LaunchScreen.storyboard in Resources */,
 				43017B3E22C2163F001B7D69 /* Assets.xcassets in Resources */,
-				43017B3C22C2163E001B7D69 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,7 +239,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43017B3922C2163E001B7D69 /* ViewController.swift in Sources */,
+				8D25093822C33E87009A5A41 /* MemoListViewController.swift in Sources */,
+				8D25093A22C34047009A5A41 /* MemoListCell.swift in Sources */,
 				43017B3722C2163E001B7D69 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -217,14 +248,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		43017B3A22C2163E001B7D69 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				43017B3B22C2163E001B7D69 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		43017B3F22C2163F001B7D69 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
