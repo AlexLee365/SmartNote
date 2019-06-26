@@ -15,6 +15,9 @@
 		43017B4E22C3456B001B7D69 /* MemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43017B4D22C3456B001B7D69 /* MemoView.swift */; };
 		43017B5022C36700001B7D69 /* MemoListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43017B4F22C36700001B7D69 /* MemoListCell.swift */; };
 		43017B5222C36772001B7D69 /* MemoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43017B5122C36772001B7D69 /* MemoListViewController.swift */; };
+		43017B5522C37C9E001B7D69 /* GoogleCloudOCRModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43017B5422C37C9D001B7D69 /* GoogleCloudOCRModel.swift */; };
+		43017B5722C37CF4001B7D69 /* GoogleCloudOCR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43017B5622C37CF4001B7D69 /* GoogleCloudOCR.swift */; };
+		43017B7822C38BC4001B7D69 /* UIExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43017B7722C38BC4001B7D69 /* UIExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +30,9 @@
 		43017B4D22C3456B001B7D69 /* MemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoView.swift; sourceTree = "<group>"; };
 		43017B4F22C36700001B7D69 /* MemoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoListCell.swift; sourceTree = "<group>"; };
 		43017B5122C36772001B7D69 /* MemoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoListViewController.swift; sourceTree = "<group>"; };
+		43017B5422C37C9D001B7D69 /* GoogleCloudOCRModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleCloudOCRModel.swift; sourceTree = "<group>"; };
+		43017B5622C37CF4001B7D69 /* GoogleCloudOCR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleCloudOCR.swift; sourceTree = "<group>"; };
+		43017B7722C38BC4001B7D69 /* UIExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIExtension.swift; sourceTree = "<group>"; };
 		6E1F3F259C18C7104FEEC827 /* Pods_SmartNote.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SmartNote.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7B6A93DF23AF7CBA28AB018 /* Pods-SmartNote.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SmartNote.release.xcconfig"; path = "Target Support Files/Pods-SmartNote/Pods-SmartNote.release.xcconfig"; sourceTree = "<group>"; };
 		EF214509A2C9A846F1F22B9A /* Pods-SmartNote.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SmartNote.debug.xcconfig"; path = "Target Support Files/Pods-SmartNote/Pods-SmartNote.debug.xcconfig"; sourceTree = "<group>"; };
@@ -69,6 +75,7 @@
 				43017B4A22C342BE001B7D69 /* Model */,
 				43017B4C22C342CE001B7D69 /* View */,
 				43017B4B22C342C2001B7D69 /* Controller */,
+				43017B7622C38BB0001B7D69 /* Extension */,
 				43017B3F22C2163F001B7D69 /* LaunchScreen.storyboard */,
 				43017B3D22C2163F001B7D69 /* Assets.xcassets */,
 				43017B4222C2163F001B7D69 /* Info.plist */,
@@ -79,6 +86,8 @@
 		43017B4A22C342BE001B7D69 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				43017B5422C37C9D001B7D69 /* GoogleCloudOCRModel.swift */,
+				43017B5622C37CF4001B7D69 /* GoogleCloudOCR.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -107,6 +116,14 @@
 				43017B4F22C36700001B7D69 /* MemoListCell.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		43017B7622C38BB0001B7D69 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				43017B7722C38BC4001B7D69 /* UIExtension.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		677D2CB2662377DB7049B1E7 /* Frameworks */ = {
@@ -250,6 +267,9 @@
 				43017B4E22C3456B001B7D69 /* MemoView.swift in Sources */,
 				43017B3722C2163E001B7D69 /* AppDelegate.swift in Sources */,
 				43017B5022C36700001B7D69 /* MemoListCell.swift in Sources */,
+				43017B5722C37CF4001B7D69 /* GoogleCloudOCR.swift in Sources */,
+				43017B5522C37C9E001B7D69 /* GoogleCloudOCRModel.swift in Sources */,
+				43017B7822C38BC4001B7D69 /* UIExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
