@@ -97,6 +97,7 @@ extension MemoListViewController: UITableViewDataSource {
         
         deleteAction.image = UIImage(named: "trash")
         
+        
         let pinTopAction = UIContextualAction(style: .normal, title: "핀 고정") { (ac: UIContextualAction, view: UIView, success: (Bool) -> Void) in
             
             success(true)
