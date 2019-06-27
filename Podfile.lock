@@ -1,20 +1,24 @@
 PODS:
   - Alamofire (5.0.0-beta.6)
+  - DropDown (2.3.13)
   - RSSelectionMenu (6.0.3)
 
 DEPENDENCIES:
   - Alamofire (~> 5.0.0-beta.5)
+  - DropDown
   - RSSelectionMenu
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
+    - DropDown
     - RSSelectionMenu
 
 SPEC CHECKSUMS:
   Alamofire: cd08a4402bd12cacd0c66f23fb12fec8d6b965e4
+  DropDown: 8a2116376c1981888557f72ec2ffc9a5e0e456ec
   RSSelectionMenu: decee83e020ee9d63e53995eb7f1ea5ca75f0667
 
-PODFILE CHECKSUM: eea0146bc67586709c311788b54edb9625ba2c52
+PODFILE CHECKSUM: a565bb595dce0bf52cb63870139461020cf3394d
 
 COCOAPODS: 1.6.1

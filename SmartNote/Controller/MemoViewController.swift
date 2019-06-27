@@ -9,10 +9,19 @@
 import UIKit
 import MobileCoreServices
 import Alamofire
+import CoreData
 
 class MemoViewController: UIViewController {
     
+    // MARK: - Properties
     let memoView = MemoView()
+    let notiCenter = NotificationCenter.default
+    
+    let defaultRightBarBtn = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(rightBarBtnDidTap(_:)))
+    let completeRightBarBtn = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(rightBarBtnDidTap(_:)))
+    
+    
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func loadView() {
         view = memoView
@@ -22,6 +31,7 @@ class MemoViewController: UIViewController {
         super.viewDidLoad()
         
         configureViewsOptions()
+        addNotificationObserver()
     }
     
     private func setAutoLayout() {
@@ -38,12 +48,10 @@ class MemoViewController: UIViewController {
         
         memoView.cameraBtn.addTarget(self, action: #selector(cameraBtnDidTap(_:)), for: .touchUpInside)
         memoView.albumBtn.addTarget(self, action: #selector(albumBtnDidTap(_:)), for: .touchUpInside)
-        memoView.translateBtn.addTarget(self, action: #selector(translateBtnDidTap(_:)), for: .touchUpInside)
-        
-        let rightBarBtn = UIBarButtonItem(title: "수정", style: .plain, target: self, action: #selector(rightBarBtnDidTap(_:)))
+
         
         
-        navigationItem.rightBarButtonItem = rightBarBtn
+        navigationItem.rightBarButtonItem = defaultRightBarBtn
         
         
         let swipeFromRight = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(_:)))
@@ -53,6 +61,36 @@ class MemoViewController: UIViewController {
         let swipeFromLeft = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(_:)))
         swipeFromLeft.direction = .left
         view.addGestureRecognizer(swipeFromLeft)
+    }
+    
+    func addNotificationObserver() {
+        notiCenter.addObserver(self, selector: #selector(didReceiveNotification(_:)), name: NSNotification.Name("textViewEditing"), object: nil)
+        notiCenter.addObserver(self, selector: #selector(didReceiveNotification(_:)), name: NSNotification.Name("textViewEditingEnd"), object: nil)
+        notiCenter.addObserver(self, selector: #selector(didReceiveNotification(_:)), name: NSNotification.Name("textViewEditingEndButEmpty"), object: nil)
+    }
+    
+    @objc func didReceiveNotification(_ sender: Notification) {
+        switch sender.name {
+        case Notification.Name("textViewEditing") :
+            print("textViewEditing")
+            navigationItem.rightBarButtonItem = completeRightBarBtn
+            
+        case Notification.Name("textViewEditingEnd"):
+            print("textViewEditingEnd")
+            
+            let saveRightBarBtn = UIBarButtonItem(title: "저장", style: .plain, target: self, action: #selector(rightBarBtnDidTap(_:)))
+            navigationItem.rightBarButtonItem = saveRightBarBtn
+
+            
+            
+            
+        case Notification.Name("textViewEditingEndButEmpty"):
+            print("textViewEditingEndButEmpty")
+            navigationItem.rightBarButtonItem = defaultRightBarBtn
+            
+            
+        default : break
+        }
     }
     
     
@@ -70,51 +108,29 @@ class MemoViewController: UIViewController {
         presentImagePickerController(withSourceType: .photoLibrary)
     }
     
-    @objc func translateBtnDidTap(_ sender: UIButton) {
-        let queryValue = memoView.textView.text ?? ""
-        var languageTranslateFrom = "kr"
-        var languageTranslateTo = "en"
-        
-        let urlString = "https://kapi.kakao.com/v1/translation/translate?"
-            + "app_key=e4e4abd79709fdbc4e04e732818ac6f1&"
-            + "src_lang=\(languageTranslateFrom)&"
-            + "target_lang=\(languageTranslateTo)&"
-            + "query=\(queryValue)"
-        
-        guard let translateAPIString = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-            let convertUrl = URL(string: translateAPIString)
-            else { print("convertUrl failed"); return }
-        
-        AF.request(convertUrl).responseJSON { (response) in
-            switch response.result {
-            case .success(let value):
-                
-                guard let dicValue = value as? [String: Any], let textDataArray = dicValue["translated_text"] as? [[String]]
-                    else { print("textDataArray convert error"); return }
-                print("🔵🔵🔵  ", textDataArray)
-                
-                var text = ""
-                textDataArray.map{ $0.first ?? ""}.forEach{
-                    text += $0
-                }
-                print("🔵🔵🔵  ", text)
-                
-                
-                self.memoView.textView.text = text
-                
-            case .failure(let error):
-                print(error)
-            }
-        }
-        
-        
-        
-        
-        
-    }
     
     @objc func rightBarBtnDidTap(_ sender: UIBarButtonItem) {
-        memoView.textView.resignFirstResponder()
+        print("--------------------------[rightBarBtn DidTap]--------------------------")
+        
+        
+        if navigationItem.rightBarButtonItem?.title == "저장" {  // 저장 버튼 클릭시
+            let date = Date()
+            let text = memoView.textView.text ?? ""
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy. M. d"
+            dateFormatter.locale = Locale(identifier: "ko")
+
+            let currentDateString = dateFormatter.string(from: date)
+            print("현재 시간: ", currentDateString)
+            print("랜덤문자생성: ", makeRandomString())
+            
+//            let memoData = MemoData(date: date, text: <#T##String#>)
+            
+        } else {
+            memoView.textView.resignFirstResponder()
+            
+        }
     }
     
     @objc func respondToSwipeGesture(_ gesture: UISwipeGestureRecognizer) {
@@ -178,4 +194,21 @@ extension MemoViewController: UIImagePickerControllerDelegate, UINavigationContr
     }
     
     
+}
+
+
+
+fileprivate func makeRandomString() -> String {
+    let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    let length = UInt32(letters.length)
+    
+    var randomString = ""
+    
+    for _ in 0 ..< 10 {
+        let rand = arc4random_uniform(length)
+        var nextChar = letters.character(at: Int(rand))
+        randomString += NSString(characters: &nextChar, length: 1) as String
+    }
+    
+    return randomString
 }

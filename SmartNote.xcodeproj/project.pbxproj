@@ -18,6 +18,9 @@
 		43017B5522C37C9E001B7D69 /* GoogleCloudOCRModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43017B5422C37C9D001B7D69 /* GoogleCloudOCRModel.swift */; };
 		43017B5722C37CF4001B7D69 /* GoogleCloudOCR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43017B5622C37CF4001B7D69 /* GoogleCloudOCR.swift */; };
 		43017B7822C38BC4001B7D69 /* UIExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43017B7722C38BC4001B7D69 /* UIExtension.swift */; };
+		43017B7C22C49646001B7D69 /* Else.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43017B7B22C49646001B7D69 /* Else.swift */; };
+		43017B7F22C49672001B7D69 /* MemoData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 43017B7D22C49672001B7D69 /* MemoData.xcdatamodeld */; };
+		43017B8822C4AEC0001B7D69 /* MemoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43017B8722C4AEC0001B7D69 /* MemoData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +36,9 @@
 		43017B5422C37C9D001B7D69 /* GoogleCloudOCRModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleCloudOCRModel.swift; sourceTree = "<group>"; };
 		43017B5622C37CF4001B7D69 /* GoogleCloudOCR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleCloudOCR.swift; sourceTree = "<group>"; };
 		43017B7722C38BC4001B7D69 /* UIExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIExtension.swift; sourceTree = "<group>"; };
+		43017B7B22C49646001B7D69 /* Else.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Else.swift; sourceTree = "<group>"; };
+		43017B7E22C49672001B7D69 /* MemoData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MemoData.xcdatamodel; sourceTree = "<group>"; };
+		43017B8722C4AEC0001B7D69 /* MemoData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoData.swift; sourceTree = "<group>"; };
 		6E1F3F259C18C7104FEEC827 /* Pods_SmartNote.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SmartNote.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7B6A93DF23AF7CBA28AB018 /* Pods-SmartNote.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SmartNote.release.xcconfig"; path = "Target Support Files/Pods-SmartNote/Pods-SmartNote.release.xcconfig"; sourceTree = "<group>"; };
 		EF214509A2C9A846F1F22B9A /* Pods-SmartNote.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SmartNote.debug.xcconfig"; path = "Target Support Files/Pods-SmartNote/Pods-SmartNote.debug.xcconfig"; sourceTree = "<group>"; };
@@ -88,6 +94,8 @@
 			children = (
 				43017B5422C37C9D001B7D69 /* GoogleCloudOCRModel.swift */,
 				43017B5622C37CF4001B7D69 /* GoogleCloudOCR.swift */,
+				43017B8722C4AEC0001B7D69 /* MemoData.swift */,
+				43017B7D22C49672001B7D69 /* MemoData.xcdatamodeld */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -122,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				43017B7722C38BC4001B7D69 /* UIExtension.swift */,
+				43017B7B22C49646001B7D69 /* Else.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -243,6 +252,7 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-SmartNote/Pods-SmartNote-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/DropDown/DropDown.framework",
 				"${BUILT_PRODUCTS_DIR}/RSSelectionMenu/RSSelectionMenu.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -250,6 +260,7 @@
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DropDown.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RSSelectionMenu.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -266,8 +277,11 @@
 			files = (
 				43017B4922C3429E001B7D69 /* MemoViewController.swift in Sources */,
 				43017B5222C36772001B7D69 /* MemoListViewController.swift in Sources */,
+				43017B7C22C49646001B7D69 /* Else.swift in Sources */,
 				43017B4E22C3456B001B7D69 /* MemoView.swift in Sources */,
+				43017B8822C4AEC0001B7D69 /* MemoData.swift in Sources */,
 				43017B3722C2163E001B7D69 /* AppDelegate.swift in Sources */,
+				43017B7F22C49672001B7D69 /* MemoData.xcdatamodeld in Sources */,
 				43017B5022C36700001B7D69 /* MemoListCell.swift in Sources */,
 				43017B5722C37CF4001B7D69 /* GoogleCloudOCR.swift in Sources */,
 				43017B5522C37C9E001B7D69 /* GoogleCloudOCRModel.swift in Sources */,
@@ -465,6 +479,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		43017B7D22C49672001B7D69 /* MemoData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				43017B7E22C49672001B7D69 /* MemoData.xcdatamodel */,
+			);
+			currentVersion = 43017B7E22C49672001B7D69 /* MemoData.xcdatamodel */;
+			path = MemoData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 43017B2B22C2163E001B7D69 /* Project object */;
 }
