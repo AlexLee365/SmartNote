@@ -103,11 +103,11 @@ extension MemoListViewController: UITableViewDataSource {
         }()
         
         cell.accessoryType = .disclosureIndicator
-        cell.titleLabel.text = memoArray[indexPath.row].returnTitle()
-        cell.dateLabel.text = formatter.string(from: memoArray[indexPath.row].date)
-        cell.descriptionLabel.text = memoArray[indexPath.row].returnBody()
-        cell.noteIcon.image = UIImage(named: "noteIcon")
         cell.selectionStyle = .none
+        cell.titleLabel.text = memoArray[indexPath.row].returnTitleAndBody().0
+        cell.descriptionLabel.text = memoArray[indexPath.row].returnTitleAndBody().1
+        cell.dateLabel.text = formatter.string(from: memoArray[indexPath.row].date)
+        cell.noteIcon.image = UIImage(named: "noteIcon")
         
         return cell
     }
