@@ -22,18 +22,23 @@ class MemoData {
         self.text = text
     }
     
-    func returnTitle() -> String {
-        var text = self.text
+    func returnTitleAndBody() -> (String, String) {
+        let text = self.text
+        var title = ""
+        var body = "추가 텍스트 없음"
         
-        return ""
+        if text.contains("\n") {
+            let component = text.split(separator: "\n", maxSplits: 1, omittingEmptySubsequences: true)
+            title = String(component[0])
+            body = String(component[1])
+        } else {
+            title = text
+        }
+        
+        return (title, body)
     }
     
-    func returnBody() -> String {
-        var text = self.text
-        
-        
-        return ""
-    }
+    
 }
 
 fileprivate func makeRandomString() -> String {
