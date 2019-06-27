@@ -6,6 +6,7 @@
 //  Copyright © 2019 Alex Lee. All rights reserved.
 //
 import UIKit
+import CoreData
 
 class MemoListViewController: UIViewController {
     
@@ -15,29 +16,45 @@ class MemoListViewController: UIViewController {
     
     var memoArray = [MemoData]()
     
+    let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
         setAutoLayout()
-        makeData()
+        
     }
     
-    func makeData() {
-        let date = Date()
-        memoArray = [
-            MemoData(date: date, text: "청와대는 영변 핵시설 전면 폐기가 북한 비핵화의 되돌릴 수 없는 단계라는 문재인 대통령의 어제 언급과 관련해 영변 핵폐기는 비핵화로 가기 위한 되돌릴 수 없는 단계로 접어드는 입구라고 설명했습니다. \n 청와대 핵심관계자는 오늘 기자들과 만나 어떤 사안을 보면 다시는 되돌릴 수 없는 정도의 것이 있지 않느냐면서 그것을 영변 핵폐기로 본다는 것이라며 이같이 말했습니다. \n 이 관계자는 그러면서 영변 핵폐기가 완전한 비핵화라는 게 아니라, 어느 단계를 되돌릴 수 없는 단계로 간주할 것인지가 협상의 핵심이 될 거라는 점이 대통령 인터뷰에 다 나와있다고 강조했습니다."),
+    func getCoreData() {        // 저장된 CoreData에서 불러와 테이블뷰에 뿌려줄 memoArray에 값 추가해주는 메소드
+        memoArray.removeAll()
+        
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MemoCoreData")
+        
+        do {
+            let objects = try managedObjectContext.fetch(request) as! [NSManagedObject]
+            print("🔵🔵🔵 Load Data: ", objects)
             
-            MemoData(date: date, text: "톱스타 부부인 송중기와 송혜교가 결혼한 지 1년8개월 만에 파경을 맞았습니다. 송중기는 법률대리인인 법무법인, 광장을 통해 어제 서울가정법원에 송혜교와의 이혼조정을 신청했다고 밝혔습니다. 이어 소속사를 통해 사생활에 대한 이야기들을 하나하나 말씀드리기 어려운 점 양해 부탁드리고, 앞으로 저는 지금의 상처에서 벗어나 연기자로서 작품 활동에 최선을 다하여 좋은 작품으로 보답하겠다고 밝혔습니다."),
+            guard objects.count > 0 else { print("There's no objects"); return }
+            for nsManagedObject in objects {
+                guard let coreData = nsManagedObject as? MemoCoreData else { print("coreData convert Error"); return }
+                
+                print("Date: \(coreData.date!) / UniqueKey: \(coreData.uniqueKey!) / Text: \(coreData.text!)")
+                
+                let memoDataFromCoreData = convertMemoDataFromCoreData(coreData)
+                memoArray.append(memoDataFromCoreData)
+            }
             
-            MemoData(date: date, text: "memo3"),
-            MemoData(date: date, text: "memo4")
-        ]
+        }catch let error as NSError {
+            print("‼️‼️‼️ : ", error.localizedDescription)
+        }
+        tableView.reloadData()
     }
     
     // shows search bar without scrolling up
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        getCoreData()
         navigationItem.hidesSearchBarWhenScrolling = false
     }
     
@@ -66,7 +83,7 @@ class MemoListViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(MemoListCell.self, forCellReuseIdentifier: "MemoListCell")
-        tableView.rowHeight = 80
+        tableView.rowHeight = 60
         tableView.backgroundColor = .white
         view.addSubview(tableView)
     }
@@ -114,24 +131,120 @@ extension MemoListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let currentMemoUniqueKey = self.memoArray[indexPath.row].uniqueKey   // 현재 선택한 셀의 UniqueKey
         
+        // 삭제 버튼 클릭시
         let deleteAction = UIContextualAction(style: .destructive, title: "삭제") { (ac: UIContextualAction, view: UIView, success: (Bool) -> Void) in
             
+            
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MemoCoreData")
+            let pred = NSPredicate(format: "(uniqueKey = %@)", currentMemoUniqueKey)
+            request.predicate = pred
+
+            do {
+                let objects = try self.managedObjectContext.fetch(request) as! [NSManagedObject]
+                guard objects.count > 0 else { print("There's no objects"); return }
+                self.managedObjectContext.delete(objects.first!)
+                try self.managedObjectContext.save()
+                
+            }catch let error as NSError {
+                print("‼️‼️‼️ : ", error.localizedDescription)
+            }
             success(true)
         }
         
         deleteAction.image = UIImage(named: "trash")
+        deleteAction.backgroundColor = UIColor(red:0.72, green:0.11, blue:0.11, alpha:1.0)
         
-        
+        // 핀고정 버튼 클릭시
         let pinTopAction = UIContextualAction(style: .normal, title: "핀 고정") { (ac: UIContextualAction, view: UIView, success: (Bool) -> Void) in
+            
+            
             
             success(true)
         }
-        
         pinTopAction.image = UIImage(named: "pin")
-        pinTopAction.backgroundColor = .black
+        pinTopAction.backgroundColor = UIColor(red:0.00, green:0.72, blue:0.83, alpha:1.0)
         
-        return UISwipeActionsConfiguration(actions: [deleteAction, pinTopAction])
+        // 잠금버튼 클릭시
+        let lockAction =  UIContextualAction(style: .normal, title: "잠금") { (ac: UIContextualAction, view: UIView, success: (Bool) -> Void) in
+            
+            let alert = UIAlertController(title: "Lock the Memo", message: "Input your Password", preferredStyle: .alert)
+            let action1 = UIAlertAction(title: "OK", style: .default) { _ in
+                // 비밀번호 재확인 Alert창
+                guard !alert.textFields!.first!.text!.isEmpty
+                    else { self.makeAlert(title: "Message", message: "Please Input Password"); return;}
+                
+                alert.dismiss(animated: true, completion: nil)
+                
+                let alertAgain = UIAlertController(title: "Check Passwords", message: "Input your Password again", preferredStyle: .alert)
+                let action1 = UIAlertAction(title: "OK", style: .default) { _ in
+                    if alert.textFields?.first?.text == alertAgain.textFields?.first?.text {
+                        // 첫번째 Alert에서 입력한 비밀번호와 두번째 Alert에서 입력한 비밀번호가 같을때
+                        
+                        // 잠금된 정보를 Upload
+                        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MemoCoreData")
+                        let pred = NSPredicate(format: "(uniqueKey = %@)", currentMemoUniqueKey)
+                        request.predicate = pred
+                        
+                        do {
+                            let objects = try self.managedObjectContext.fetch(request) as! [NSManagedObject]
+                            
+                            guard objects.count > 0 else { print("There's no objects"); return }
+                            objects.first!.setValue(alertAgain.textFields?.first?.text, forKey: "password")
+                            objects.first!.setValue(true, forKey: "isLocked")
+                            try self.managedObjectContext.save()
+                        }catch let error as NSError {
+                            print("‼️‼️‼️ : ", error.localizedDescription)
+                        }
+                        
+                        self.getCoreData()   // 수정된 데이터로 다시 테이블뷰로 뿌려줌
+                        
+                    } else {
+                        // 틀렸을때
+                        self.makeAlert(title: "Failed", message: "Wrong Password")
+                    }
+                }
+                let action2 = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                alertAgain.addTextField { (textField) in
+                    textField.placeholder = "비밀번호를 한번 더 입력하세요"
+                    textField.isSecureTextEntry = true
+                }
+                
+                
+                alertAgain.addAction(action1); alertAgain.addAction(action2)
+                self.present(alertAgain, animated: true)
+            }
+            let action2 = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            alert.addTextField { (textField) in
+                textField.placeholder = "비밀번호를 입력하세요"
+                textField.isSecureTextEntry = true
+            }
+            
+            
+            alert.addAction(action1); alert.addAction(action2)
+            self.present(alert, animated: true)
+            
+            success(true)
+        }
+        lockAction.image = UIImage(named: "lock")
+        lockAction.backgroundColor = UIColor(red:1.00, green:0.84, blue:0.31, alpha:1.0)
+        
+        
+        
+        
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction, pinTopAction, lockAction])
+        configuration.performsFirstActionWithFullSwipe = false
+        
+        return configuration
+    }
+    
+    func makeAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action1 = UIAlertAction(title: "OK", style: .default) { _ in }
+        
+        alert.addAction(action1)
+        present(alert, animated: true)
     }
 }
 
@@ -140,11 +253,40 @@ extension MemoListViewController: UITableViewDataSource {
 extension MemoListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         let detailMemoVC = DetailMemoViewController()
-        
         detailMemoVC.detailMemo = memoArray[indexPath.row]
-        navigationController?.pushViewController(detailMemoVC, animated: true)
+        
+        // 메모가 잠겨있는 상태이면
+        if memoArray[indexPath.row].isLocked == true {
+            
+            let alert = UIAlertController(title: "This is locked Memo", message: "Input your Password", preferredStyle: .alert)
+            let action1 = UIAlertAction(title: "OK", style: .default) { _ in
+                // 비밀번호 재확인 Alert창
+                guard alert.textFields?.first?.text == self.memoArray[indexPath.row].password else {
+                    self.makeAlert(title: "Failed", message: "This is Wrong Password")
+                    alert.dismiss(animated: true, completion: nil)
+                    return
+                }
+                self.navigationController?.pushViewController(detailMemoVC, animated: true)
+            }
+            let action2 = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            alert.addTextField { (textField) in
+                textField.placeholder = "비밀번호를 입력하세요"
+                textField.isSecureTextEntry = true
+            }
+            
+            
+            alert.addAction(action1); alert.addAction(action2)
+            self.present(alert, animated: true)
+            
+        } else {
+            navigationController?.pushViewController(detailMemoVC, animated: true)
+        }
+        
+        
+        
+       
+        
     }
     
 }
