@@ -52,8 +52,8 @@ class MemoListViewController: UIViewController {
     // MARK: - configuration
     
     private func configure() {
-//        navigationItem.titleView = titleImageView
-//        titleImageView.contentMode = .scaleAspectFit
+        navigationItem.titleView = titleImageView
+        titleImageView.contentMode = .scaleAspectFit
         
         title = "Memo"
         
