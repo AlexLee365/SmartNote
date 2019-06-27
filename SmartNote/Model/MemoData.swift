@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 class MemoData {
     var uniqueKey: String
@@ -54,4 +55,29 @@ fileprivate func makeRandomString() -> String {
     }
     
     return randomString
+}
+
+func convertMemoDataFromCoreData(_ coreData: MemoCoreData) -> MemoData{
+    var memoData = MemoData(date: Date(), text: "")
+    
+    memoData.uniqueKey = coreData.uniqueKey ?? ""
+    memoData.date = coreData.date ?? Date()
+    memoData.text = coreData.text ?? ""
+    memoData.isLocked = coreData.isLocked
+    memoData.password = coreData.password ?? ""
+    memoData.isPinned = coreData.isPinned
+    
+    return memoData
+}
+
+func saveCoreDataFromMemoData(coreData: MemoCoreData, memoData: MemoData) {
+    var memoCoreDataObject = coreData
+    
+    memoCoreDataObject.uniqueKey = memoData.uniqueKey
+    memoCoreDataObject.date = memoData.date
+    memoCoreDataObject.text = memoData.text
+    memoCoreDataObject.isLocked = memoData.isLocked
+    memoCoreDataObject.password = memoData.password
+    memoCoreDataObject.isPinned = memoData.isPinned
+    
 }

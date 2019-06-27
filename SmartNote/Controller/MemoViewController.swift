@@ -21,7 +21,7 @@ class MemoViewController: UIViewController {
     let completeRightBarBtn = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(rightBarBtnDidTap(_:)))
     
     
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func loadView() {
         view = memoView
@@ -30,14 +30,41 @@ class MemoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MemoCoreData")
+//        e8EmFSzD7S
+//        let pred = NSPredicate(format: "(uniqueKey = %@)", "e8EmFSzD7S")
+//        request.predicate = pred
+        
+        do {
+            let objects = try managedObjectContext.fetch(request) as! [NSManagedObject]
+            print("🔵🔵🔵 Load Data: ", objects)
+            
+            guard objects.count > 0 else { print("There's no objects"); return }
+            for nsManagedObject in objects {
+                guard let coreData = nsManagedObject as? MemoCoreData else { print("coreData convert Error"); return }
+                let a = convertMemoDataFromCoreData(coreData)
+                print(a.uniqueKey)
+                print(a.text)
+                print(a.date)
+            }
+            
+            
+            
+        }catch let error as NSError {
+            print("‼️‼️‼️ : ", error.localizedDescription)
+        }
+        
+        
+        
+        
+        
         configureViewsOptions()
         addNotificationObserver()
     }
     
     private func setAutoLayout() {
         let safeGuide = view.safeAreaLayoutGuide
-        
-        
     }
     
     private func configureViewsOptions() {
@@ -77,18 +104,12 @@ class MemoViewController: UIViewController {
             
         case Notification.Name("textViewEditingEnd"):
             print("textViewEditingEnd")
-            
             let saveRightBarBtn = UIBarButtonItem(title: "저장", style: .plain, target: self, action: #selector(rightBarBtnDidTap(_:)))
             navigationItem.rightBarButtonItem = saveRightBarBtn
 
-            
-            
-            
         case Notification.Name("textViewEditingEndButEmpty"):
             print("textViewEditingEndButEmpty")
             navigationItem.rightBarButtonItem = defaultRightBarBtn
-            
-            
         default : break
         }
     }
@@ -110,22 +131,36 @@ class MemoViewController: UIViewController {
     
     
     @objc func rightBarBtnDidTap(_ sender: UIBarButtonItem) {
-        print("--------------------------[rightBarBtn DidTap]--------------------------")
-        
         
         if navigationItem.rightBarButtonItem?.title == "저장" {  // 저장 버튼 클릭시
+            print("--------------------------[저장버튼 클릭]--------------------------")
             let date = Date()
             let text = memoView.textView.text ?? ""
             
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy. M. d"
-            dateFormatter.locale = Locale(identifier: "ko")
-
-            let currentDateString = dateFormatter.string(from: date)
-            print("현재 시간: ", currentDateString)
-            print("랜덤문자생성: ", makeRandomString())
+//            let dateFormatter = DateFormatter()
+//            dateFormatter.dateFormat = "yyyy. M. d"
+//            dateFormatter.locale = Locale(identifier: "ko")
+//
+//            let currentDateString = dateFormatter.string(from: date)
+//            print("현재 시간: ", currentDateString)
+//            print("랜덤문자생성: ", makeRandomString())
             
-//            let memoData = MemoData(date: date, text: <#T##String#>)
+            
+            let memoData = MemoData(date: date, text: text)
+            
+            let entityDescription = NSEntityDescription.entity(forEntityName: "MemoCoreData", in: managedObjectContext)
+            let memoCoreDataObject = MemoCoreData(entity: entityDescription!, insertInto: managedObjectContext)
+            
+            saveCoreDataFromMemoData(coreData: memoCoreDataObject, memoData: memoData)
+            
+            do {
+                try managedObjectContext.save()
+            } catch let error as NSError {
+                print("‼️‼️‼️ : ", error.localizedDescription)
+            }
+            print("🔵🔵🔵 managedObjectContext: ", managedObjectContext)
+            print(memoCoreDataObject)
+            
             
         } else {
             memoView.textView.resignFirstResponder()
