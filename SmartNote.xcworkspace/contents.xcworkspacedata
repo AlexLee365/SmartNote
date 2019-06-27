@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:MemoCoreData+CoreDataClass.swift">
+   </FileRef>
+   <FileRef
+      location = "group:MemoCoreData+CoreDataProperties.swift">
+   </FileRef>
+   <FileRef
       location = "group:SmartNote.xcodeproj">
    </FileRef>
    <FileRef
