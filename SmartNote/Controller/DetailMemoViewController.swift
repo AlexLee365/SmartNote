@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class DetailMemoViewController: UIViewController {
     
@@ -22,6 +23,7 @@ class DetailMemoViewController: UIViewController {
     let dateLabel = UILabel()
 
     var detailMemo: MemoData?
+    let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +45,7 @@ class DetailMemoViewController: UIViewController {
         detailTextView.backgroundColor = .clear
         detailTextView.font = UIFont.systemFont(ofSize: 18, weight: .regular)
         detailTextView.text = detailMemo?.text
+        detailTextView.autocorrectionType = .no
         view.addSubview(detailTextView)
         
         dateLabel.textColor = .lightGray
@@ -54,6 +57,23 @@ class DetailMemoViewController: UIViewController {
     
     @objc func completeRightBarBtnDidTap(_ sender: UIBarButtonItem) {
         print("completeRightBarBtnDidTap")
+        
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MemoCoreData")
+        let pred = NSPredicate(format: "(uniqueKey = %@)", detailMemo!.uniqueKey)
+        request.predicate = pred
+        
+        do {
+            let objects = try managedObjectContext.fetch(request) as! [NSManagedObject]
+            
+            guard objects.count > 0 else { print("There's no objects"); return }
+            objects.first!.setValue(detailTextView.text, forKey: "text")
+            try managedObjectContext.save()
+        }catch let error as NSError {
+            print("‼️‼️‼️ : ", error.localizedDescription)
+        }
+        
+        
+        
         detailTextView.resignFirstResponder()
     }
     

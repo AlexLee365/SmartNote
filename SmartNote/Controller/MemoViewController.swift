@@ -20,7 +20,6 @@ class MemoViewController: UIViewController {
     let defaultRightBarBtn = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(rightBarBtnDidTap(_:)))
     let completeRightBarBtn = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(rightBarBtnDidTap(_:)))
     
-    
     let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func loadView() {
@@ -31,29 +30,29 @@ class MemoViewController: UIViewController {
         super.viewDidLoad()
         
 
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MemoCoreData")
-//        e8EmFSzD7S
-//        let pred = NSPredicate(format: "(uniqueKey = %@)", "e8EmFSzD7S")
-//        request.predicate = pred
-        
-        do {
-            let objects = try managedObjectContext.fetch(request) as! [NSManagedObject]
-            print("🔵🔵🔵 Load Data: ", objects)
-            
-            guard objects.count > 0 else { print("There's no objects"); return }
-            for nsManagedObject in objects {
-                guard let coreData = nsManagedObject as? MemoCoreData else { print("coreData convert Error"); return }
-                let a = convertMemoDataFromCoreData(coreData)
-                print(a.uniqueKey)
-                print(a.text)
-                print(a.date)
-            }
-            
-            
-            
-        }catch let error as NSError {
-            print("‼️‼️‼️ : ", error.localizedDescription)
-        }
+//        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MemoCoreData")
+////        e8EmFSzD7S
+////        let pred = NSPredicate(format: "(uniqueKey = %@)", "e8EmFSzD7S")
+////        request.predicate = pred
+//
+//        do {
+//            let objects = try managedObjectContext.fetch(request) as! [NSManagedObject]
+//            print("🔵🔵🔵 Load Data: ", objects)
+//
+//            guard objects.count > 0 else { print("There's no objects"); return }
+//            for nsManagedObject in objects {
+//                guard let coreData = nsManagedObject as? MemoCoreData else { print("coreData convert Error"); return }
+//                let a = convertMemoDataFromCoreData(coreData)
+//                print(a.uniqueKey)
+//                print(a.text)
+//                print(a.date)
+//            }
+//
+//
+//
+//        }catch let error as NSError {
+//            print("‼️‼️‼️ : ", error.localizedDescription)
+//        }
         
         
         

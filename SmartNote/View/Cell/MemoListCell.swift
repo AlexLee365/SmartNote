@@ -32,10 +32,11 @@ class MemoListCell: UITableViewCell {
         dateLabel.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
         contentView.addSubview(dateLabel)
         
-        titleLabel.font = UIFont.systemFont(ofSize: 19, weight: .medium)
+        titleLabel.font = UIFont.systemFont(ofSize: 17, weight: .medium)
         contentView.addSubview(titleLabel)
         
         descriptionLabel.textColor = .lightGray
+        descriptionLabel.font = .systemFont(ofSize: 14)
         contentView.addSubview(descriptionLabel)
         
         noteIcon.contentMode = .scaleAspectFit
