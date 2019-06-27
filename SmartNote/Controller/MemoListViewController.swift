@@ -52,8 +52,10 @@ class MemoListViewController: UIViewController {
     // MARK: - configuration
     
     private func configure() {
-        navigationItem.titleView = titleImageView
-        titleImageView.contentMode = .scaleAspectFit
+//        navigationItem.titleView = titleImageView
+//        titleImageView.contentMode = .scaleAspectFit
+        
+        title = "Memo"
         
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
@@ -65,7 +67,7 @@ class MemoListViewController: UIViewController {
         tableView.delegate = self
         tableView.register(MemoListCell.self, forCellReuseIdentifier: "MemoListCell")
         tableView.rowHeight = 80
-        tableView.backgroundColor = .clear
+        tableView.backgroundColor = .white
         view.addSubview(tableView)
     }
     
@@ -102,7 +104,6 @@ extension MemoListViewController: UITableViewDataSource {
             return f
         }()
         
-        cell.accessoryType = .disclosureIndicator
         cell.selectionStyle = .none
         cell.titleLabel.text = memoArray[indexPath.row].returnTitleAndBody().0
         cell.descriptionLabel.text = memoArray[indexPath.row].returnTitleAndBody().1
@@ -141,6 +142,8 @@ extension MemoListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let detailMemoVC = DetailMemoViewController()
+        
+        detailMemoVC.detailMemo = memoArray[indexPath.row]
         navigationController?.pushViewController(detailMemoVC, animated: true)
     }
     
