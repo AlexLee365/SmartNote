@@ -53,6 +53,7 @@ class MemoListCell: UITableViewCell {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -10).isActive = true
         titleLabel.leadingAnchor.constraint(equalTo: noteIcon.trailingAnchor, constant: 15).isActive = true
+        titleLabel.widthAnchor.constraint(equalToConstant: 150).isActive = true
         
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
         dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8).isActive = true
@@ -61,6 +62,6 @@ class MemoListCell: UITableViewCell {
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5).isActive = true
         descriptionLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
-        descriptionLabel.widthAnchor.constraint(equalToConstant: 250).isActive = true
+        descriptionLabel.trailingAnchor.constraint(equalTo: dateLabel.leadingAnchor, constant: -30).isActive = true
     }
 }
