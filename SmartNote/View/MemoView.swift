@@ -290,6 +290,8 @@ class MemoView: UIView {
                 
                 self.textView.text = text
                 
+                self.notiCenter.post(Notification(name: Notification.Name("textViewEditingEnd")))
+                
             case .failure(let error):
                 print(error)
             }
@@ -302,6 +304,7 @@ class MemoView: UIView {
 extension MemoView: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         print("--------------------------[MemoView textView Did Begin Editing]--------------------------")
+        textView.centerVertically()
         isTextViewHasText = true
         notiCenter.post(Notification(name: Notification.Name("textViewEditing")))
     }
@@ -314,6 +317,13 @@ extension MemoView: UITextViewDelegate {
         } else {
             notiCenter.post(Notification(name: Notification.Name("textViewEditingEnd")))
         }
-        
     }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        print("--------------------------[MemoView TextView DidChange]--------------------------")
+        textView.centerVertically()
+    }
+    
+   
+   
 }

@@ -115,8 +115,8 @@
 		43017B4C22C342CE001B7D69 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				43017B4D22C3456B001B7D69 /* MemoView.swift */,
 				43017B5322C36790001B7D69 /* Cell */,
+				43017B4D22C3456B001B7D69 /* MemoView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";

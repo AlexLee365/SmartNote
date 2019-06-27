@@ -105,6 +105,15 @@ class MemoViewController: UIViewController {
             print("textViewEditingEnd")
             let saveRightBarBtn = UIBarButtonItem(title: "저장", style: .plain, target: self, action: #selector(rightBarBtnDidTap(_:)))
             navigationItem.rightBarButtonItem = saveRightBarBtn
+            
+            memoView.isTextViewHasText = true
+            
+            memoView.textView.centerVertically()
+            if let language = NSLinguisticTagger.dominantLanguage(for: self.memoView.textView.text) {
+                print(language)
+            } else {
+                print("Unkown language")
+            }
 
         case Notification.Name("textViewEditingEndButEmpty"):
             print("textViewEditingEndButEmpty")
@@ -200,7 +209,7 @@ extension MemoViewController: UIImagePickerControllerDelegate, UINavigationContr
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
+        // 카메라 또는 앨범에서 이미지를 불러옴
         if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
 
             self.memoView.textView.text = ""
@@ -219,10 +228,17 @@ extension MemoViewController: UIImagePickerControllerDelegate, UINavigationContr
                 ocrResult.annotations.forEach{
                     self.memoView.textView.text += $0.text
                 }
+                self.notiCenter.post(Notification(name: Notification.Name("textViewEditingEnd")))
             }
         }
-        memoView.textView.centerVertically()
-        memoView.isTextViewHasText = true
+        
+        
+//
+//        let saveRightBarBtn = UIBarButtonItem(title: "저장", style: .plain, target: self, action: #selector(rightBarBtnDidTap(_:)))
+//        navigationItem.rightBarButtonItem = saveRightBarBtn
+//
+//
+        
         dismiss(animated: true, completion: nil)
         
     }
