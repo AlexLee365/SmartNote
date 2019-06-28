@@ -22,55 +22,44 @@ class MemoViewController: UIViewController {
     
     let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
-    override func loadView() {
-        view = memoView
-    }
+//    override func loadView() {
+//        view = memoView
+//    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
 
-//        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MemoCoreData")
-////        e8EmFSzD7S
-////        let pred = NSPredicate(format: "(uniqueKey = %@)", "e8EmFSzD7S")
-////        request.predicate = pred
-//
-//        do {
-//            let objects = try managedObjectContext.fetch(request) as! [NSManagedObject]
-//            print("🔵🔵🔵 Load Data: ", objects)
-//
-//            guard objects.count > 0 else { print("There's no objects"); return }
-//            for nsManagedObject in objects {
-//                guard let coreData = nsManagedObject as? MemoCoreData else { print("coreData convert Error"); return }
-//                let a = convertMemoDataFromCoreData(coreData)
-//                print(a.uniqueKey)
-//                print(a.text)
-//                print(a.date)
-//            }
-//
-//
-//
-//        }catch let error as NSError {
-//            print("‼️‼️‼️ : ", error.localizedDescription)
-//        }
-        
-        
-        
-        
-        
+        setAutoLayout()
         configureViewsOptions()
         addNotificationObserver()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        memoView.textView.text = ""
+        memoView.isTextViewHasText = false
+        memoView.saveInfoContainerView.layer.opacity = 0
+        memoView.isSaved = true
+        
+    }
+    
     private func setAutoLayout() {
         let safeGuide = view.safeAreaLayoutGuide
+        
+        view.addSubview(memoView)
+        memoView.translatesAutoresizingMaskIntoConstraints = false
+        memoView.topAnchor.constraint(equalTo: safeGuide.topAnchor).isActive = true
+        memoView.leadingAnchor.constraint(equalTo: safeGuide.leadingAnchor).isActive = true
+        memoView.trailingAnchor.constraint(equalTo: safeGuide.trailingAnchor).isActive = true
+        memoView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
     
     private func configureViewsOptions() {
-        let titleImageView = UIImageView(image: UIImage(named: "smartmemo"))
+        
+        let titleImageView = UIImageView(image: UIImage(named: "smartmemo_black"))
         navigationItem.titleView = titleImageView
         titleImageView.contentMode = .scaleAspectFit
-        
         
         memoView.cameraBtn.addTarget(self, action: #selector(cameraBtnDidTap(_:)), for: .touchUpInside)
         memoView.albumBtn.addTarget(self, action: #selector(albumBtnDidTap(_:)), for: .touchUpInside)
@@ -100,6 +89,7 @@ class MemoViewController: UIViewController {
         case Notification.Name("textViewEditing") :
             print("textViewEditing")
             navigationItem.rightBarButtonItem = completeRightBarBtn
+           
             
         case Notification.Name("textViewEditingEnd"):
             print("textViewEditingEnd")
@@ -118,6 +108,15 @@ class MemoViewController: UIViewController {
         case Notification.Name("textViewEditingEndButEmpty"):
             print("textViewEditingEndButEmpty")
             navigationItem.rightBarButtonItem = defaultRightBarBtn
+            
+            UIView.animate(withDuration: 0.5, animations: {
+                self.memoView.saveInfoContainerView.layer.opacity = 0
+            }) { (_) in
+                self.memoView.saveInfoContainerView.isHidden = true
+                self.memoView.isSaved = true
+            }
+            
+            
         default : break
         }
     }
@@ -142,37 +141,62 @@ class MemoViewController: UIViewController {
         
         if navigationItem.rightBarButtonItem?.title == "저장" {  // 저장 버튼 클릭시
             print("--------------------------[저장버튼 클릭]--------------------------")
+            
+            memoView.saveInfoContainerView.isHidden = false
+            memoView.saveInfoContainerView.layer.opacity = 0
+            UIView.animate(withDuration: 0.5, animations: {
+                self.memoView.isSaved = true
+                self.memoView.saveInfoContainerView.layer.opacity = 1
+            })
+            
+            // =================================== ===================================
             let date = Date()
             let text = memoView.textView.text ?? ""
             
-//            let dateFormatter = DateFormatter()
-//            dateFormatter.dateFormat = "yyyy. M. d"
-//            dateFormatter.locale = Locale(identifier: "ko")
-//
-//            let currentDateString = dateFormatter.string(from: date)
-//            print("현재 시간: ", currentDateString)
-//            print("랜덤문자생성: ", makeRandomString())
-            
-            
             let memoData = MemoData(date: date, text: text)
             
-            let entityDescription = NSEntityDescription.entity(forEntityName: "MemoCoreData", in: managedObjectContext)
-            let memoCoreDataObject = MemoCoreData(entity: entityDescription!, insertInto: managedObjectContext)
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MemoCoreData")
             
-            saveCoreDataFromMemoData(coreData: memoCoreDataObject, memoData: memoData)
             
             do {
-                try managedObjectContext.save()
+                print("🔵🔵🔵 저장버튼클릭 => CoreData검색: ", memoView.textView.text)
+                let objects = try managedObjectContext.fetch(request) as! [NSManagedObject]
+                
+                guard objects.count > 0 else { print("There's no objects"); return }
+                var dataAlreadyExist = false
+                for nsManagedObject in objects {
+                    guard let coreData = nsManagedObject as? MemoCoreData else { print("coreData convert Error"); return }
+                    
+                    
+                    if coreData.text == memoView.textView.text! {    // 데이터가 이미 존재하면 (이전에 저장했기때문에)
+                        print("Data Exist")
+                        dataAlreadyExist = true
+                        let alert = UIAlertController(title: "Message", message: "이미 저장된 메모입니다", preferredStyle: .alert)
+                        let action1 = UIAlertAction(title: "OK", style: .default) { _ in }
+                        
+                        alert.addAction(action1)
+                        present(alert, animated: true)
+                        return
+                    }
+                }
+                
+                if dataAlreadyExist == false {  // 데이터가 존재하지않으면 현재 데이터 저장
+                    print("Data Not Exist")
+                    let entityDescription = NSEntityDescription.entity(forEntityName: "MemoCoreData", in: managedObjectContext)
+                    let memoCoreDataObject = MemoCoreData(entity: entityDescription!, insertInto: managedObjectContext)
+                    saveCoreDataFromMemoData(coreData: memoCoreDataObject, memoData: memoData)
+                    try managedObjectContext.save()
+                }
+                
             } catch let error as NSError {
                 print("‼️‼️‼️ : ", error.localizedDescription)
             }
-            print("🔵🔵🔵 managedObjectContext: ", managedObjectContext)
-            print(memoCoreDataObject)
             
             
-        } else {
+            
+        } else {    // 완료 버튼 클릭시
             memoView.textView.resignFirstResponder()
-            
+        
         }
     }
     
@@ -205,8 +229,33 @@ extension MemoViewController: UIImagePickerControllerDelegate, UINavigationContr
         controller.delegate = self
         controller.sourceType = sourceType
         controller.mediaTypes = [String(kUTTypeImage)]
-        present(controller, animated: true, completion: nil)
+        
+        let transition = CATransition()
+        transition.duration = 0.15
+        transition.type = CATransitionType.push
+        transition.subtype = CATransitionSubtype.fromLeft
+//        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeInEaseOut)
+        view.window!.layer.add(transition, forKey: kCATransition)
+        
+        present(controller, animated: false, completion: nil)
     }
+    
+   
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        print("imagepickerControllerDidCancel")
+        let transition = CATransition()
+        transition.duration = 0.15
+        transition.type = CATransitionType.push
+        transition.subtype = CATransitionSubtype.fromRight
+        picker.view.window!.layer.add(transition, forKey: kCATransition)
+
+        dismiss(animated: false)
+    }
+    
+    
+
+    
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         // 카메라 또는 앨범에서 이미지를 불러옴
@@ -232,15 +281,7 @@ extension MemoViewController: UIImagePickerControllerDelegate, UINavigationContr
             }
         }
         
-        
-//
-//        let saveRightBarBtn = UIBarButtonItem(title: "저장", style: .plain, target: self, action: #selector(rightBarBtnDidTap(_:)))
-//        navigationItem.rightBarButtonItem = saveRightBarBtn
-//
-//
-        
         dismiss(animated: true, completion: nil)
-        
     }
     
     

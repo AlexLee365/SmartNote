@@ -75,8 +75,6 @@ class DetailMemoViewController: UIViewController {
             print("‼️‼️‼️ : ", error.localizedDescription)
         }
         
-        
-        
         detailTextView.resignFirstResponder()
     }
     

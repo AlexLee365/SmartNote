@@ -35,9 +35,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let memoVC = MemoViewController()
         let navigateController = UINavigationController(rootViewController: memoVC)
         
+       
+        navigateController.navigationBar.barTintColor = UIColor(red:0.50, green:0.87, blue:0.92, alpha:1.0)
         
         window?.rootViewController = navigateController
         window?.makeKeyAndVisible()
+        
     
         return true
     }
