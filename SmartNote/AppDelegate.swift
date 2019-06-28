@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let memoVC = MemoViewController()
         let navigateController = UINavigationController(rootViewController: memoVC)
         
-        
+    
         window?.rootViewController = navigateController
         window?.makeKeyAndVisible()
     

@@ -14,8 +14,8 @@ class MemoListCell: UITableViewCell {
     let titleLabel = UILabel()
     let descriptionLabel = UILabel()
     let noteIcon = UIImageView()
-    
     let pinImageView = UIImageView()
+    let lockedImageView = UIImageView()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -43,19 +43,30 @@ class MemoListCell: UITableViewCell {
         
         noteIcon.contentMode = .scaleAspectFit
         contentView.addSubview(noteIcon)
+        
+        contentView.addSubview(pinImageView)
+        
+        lockedImageView.contentMode = .scaleAspectFit
+        contentView.addSubview(lockedImageView)
     }
     
     private func setAutolayout() {
         
+        lockedImageView.translatesAutoresizingMaskIntoConstraints = false
+        lockedImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        lockedImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5).isActive = true
+        lockedImageView.widthAnchor.constraint(equalToConstant: 15).isActive = true
+        lockedImageView.heightAnchor.constraint(equalToConstant: 15).isActive = true
+        
         noteIcon.translatesAutoresizingMaskIntoConstraints = false
         noteIcon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-        noteIcon.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10).isActive = true
-        noteIcon.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        noteIcon.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        noteIcon.leadingAnchor.constraint(equalTo: lockedImageView.trailingAnchor).isActive = true
+        noteIcon.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        noteIcon.widthAnchor.constraint(equalToConstant: 45).isActive = true
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -10).isActive = true
-        titleLabel.leadingAnchor.constraint(equalTo: noteIcon.trailingAnchor, constant: 15).isActive = true
+        titleLabel.leadingAnchor.constraint(equalTo: noteIcon.trailingAnchor, constant: 10).isActive = true
         titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30).isActive = true
     
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -68,7 +79,6 @@ class MemoListCell: UITableViewCell {
         descriptionLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
         descriptionLabel.trailingAnchor.constraint(equalTo: dateLabel.leadingAnchor, constant: -30).isActive = true
         
-        contentView.addSubview(pinImageView)
         pinImageView.translatesAutoresizingMaskIntoConstraints = false
         pinImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5).isActive = true
         pinImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 3).isActive = true
