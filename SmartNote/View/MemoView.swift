@@ -32,6 +32,8 @@ class MemoView: UIView {
     
     let translateContainerView = UIView()
     let translateFromBtn = UIButton()
+    let underlineUIView = UIView()
+    let underlineUIView2 = UIView()
     let translateToBtn = UIButton()
     
     
@@ -93,7 +95,7 @@ class MemoView: UIView {
     private func setAutoLayout() {
         print("--------------------------[MemoView setAutoLayout]--------------------------")
         
-        let buttonSpacing = UIScreen.main.bounds.width/5
+        let buttonSpacing: CGFloat = 90
         let buttonSize: CGFloat = 80
         
         let margin: CGFloat = 10
@@ -102,7 +104,7 @@ class MemoView: UIView {
         textContainerView.topAnchor.constraint(equalTo: self.topAnchor, constant: margin).isActive = true
         textContainerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: margin).isActive = true
         textContainerView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -margin).isActive = true
-        textContainerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -300).isActive = true
+        textContainerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -250).isActive = true
         
         textContainerView.addSubview(textView)
         textView.translatesAutoresizingMaskIntoConstraints = false
@@ -145,8 +147,8 @@ class MemoView: UIView {
         self.addSubview(translateContainerView)
         translateContainerView.translatesAutoresizingMaskIntoConstraints = false
         translateContainerView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        translateContainerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -180).isActive = true
-        translateContainerView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.85).isActive = true
+        translateContainerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -120).isActive = true
+        translateContainerView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.90).isActive = true
         translateContainerView.heightAnchor.constraint(equalToConstant: 100).isActive = true
         
         translateContainerView.addSubview(translateBtn)
@@ -174,14 +176,14 @@ class MemoView: UIView {
         self.addSubview(bottomBackgroundUIView)
         bottomBackgroundUIView.translatesAutoresizingMaskIntoConstraints = false
         bottomBackgroundUIView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1).isActive = true
-        bottomBackgroundUIView.topAnchor.constraint(equalTo: translateContainerView.bottomAnchor, constant: 30).isActive = true
-        bottomBackgroundUIView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true
-//        lineUIView.heightAnchor.constraint(equalToConstant: 5).isActive = true
+//        bottomBackgroundUIView.topAnchor.constraint(equalTo: translateContainerView.bottomAnchor, constant: 30).isActive = true
+        bottomBackgroundUIView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -100).isActive = true
+        bottomBackgroundUIView.heightAnchor.constraint(equalToConstant: 0.8).isActive = true
         
         self.addSubview(albumBtn)
         albumBtn.translatesAutoresizingMaskIntoConstraints = false
         albumBtn.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: -buttonSpacing).isActive = true
-        albumBtn.centerYAnchor.constraint(equalTo: self.bottomAnchor, constant: -90).isActive = true
+        albumBtn.centerYAnchor.constraint(equalTo: bottomBackgroundUIView.bottomAnchor, constant: 30).isActive = true
         albumBtn.widthAnchor.constraint(equalToConstant: buttonSize).isActive = true
         albumBtn.heightAnchor.constraint(equalToConstant: buttonSize).isActive = true
         
@@ -189,7 +191,7 @@ class MemoView: UIView {
         self.addSubview(galleryLabel)
         galleryLabel.translatesAutoresizingMaskIntoConstraints = false
         galleryLabel.centerXAnchor.constraint(equalTo: albumBtn.centerXAnchor, constant: 0).isActive = true
-        galleryLabel.bottomAnchor.constraint(equalTo: albumBtn.bottomAnchor, constant: -12).isActive = true
+        galleryLabel.bottomAnchor.constraint(equalTo: albumBtn.bottomAnchor, constant: -3).isActive = true
         
         self.addSubview(cameraBtn)
         cameraBtn.translatesAutoresizingMaskIntoConstraints = false
@@ -201,7 +203,7 @@ class MemoView: UIView {
         self.addSubview(cameraLabel)
         cameraLabel.translatesAutoresizingMaskIntoConstraints = false
         cameraLabel.centerXAnchor.constraint(equalTo: cameraBtn.centerXAnchor, constant: 0).isActive = true
-        cameraLabel.bottomAnchor.constraint(equalTo: cameraBtn.bottomAnchor, constant: -12).isActive = true
+        cameraLabel.bottomAnchor.constraint(equalTo: cameraBtn.bottomAnchor, constant: -3).isActive = true
     }
     
     private func configureViewsOptions() {
@@ -228,13 +230,13 @@ class MemoView: UIView {
         
         bottomBackgroundUIView.backgroundColor = UIColor(red:0.50, green:0.87, blue:0.92, alpha:1.0)
         
-        albumBtn.backgroundColor = UIColor(red:0.00, green:0.38, blue:0.39, alpha:1)
-        albumBtn.setImage(UIImage(named: "galleryIcon_45"), for: .normal)
-        albumBtn.layer.shadowColor = UIColor.gray.cgColor
-        albumBtn.layer.shadowOpacity = 0.8
-        albumBtn.layer.shadowOffset = CGSize(width: 2, height: 2)
-        albumBtn.layer.shadowRadius = 0.2
-        albumBtn.imageEdgeInsets = UIEdgeInsets(top: -5, left: 0, bottom: 5, right: 0)
+//        albumBtn.backgroundColor = UIColor(red:0.00, green:0.38, blue:0.39, alpha:1)
+        albumBtn.setImage(UIImage(named: "gallery_gray"), for: .normal)
+//        albumBtn.layer.shadowColor = UIColor.gray.cgColor
+//        albumBtn.layer.shadowOpacity = 0.8
+//        albumBtn.layer.shadowOffset = CGSize(width: 2, height: 2)
+//        albumBtn.layer.shadowRadius = 0.2
+//        albumBtn.imageEdgeInsets = UIEdgeInsets(top: -5, left: 0, bottom: 5, right: 0)
         
 //        globeButton.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).CGColor
 //        globeButton.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
@@ -242,42 +244,43 @@ class MemoView: UIView {
 //        globeButton.layer.shadowRadius = 0.0
 //        globeButton.layer.masksToBounds = false
         
-        galleryLabel.text = "Gallery"
+        galleryLabel.text = "앨범"
         galleryLabel.font = .systemFont(ofSize: 12, weight: .medium)
-        galleryLabel.textColor = .white
+        galleryLabel.textColor = UIColor(red:0.40, green:0.40, blue:0.40, alpha:1.0)
         
         
         
-        cameraBtn.backgroundColor = UIColor(red:0.00, green:0.38, blue:0.39, alpha:1)
-        cameraBtn.setImage(UIImage(named: "cameraIcon_55"), for: .normal)
-        cameraBtn.layer.shadowColor = UIColor.gray.cgColor
-        cameraBtn.layer.shadowOpacity = 0.8
-        cameraBtn.layer.shadowOffset = CGSize(width: 2, height: 2)
-        cameraBtn.layer.shadowRadius = 0.2
-        cameraBtn.imageEdgeInsets = UIEdgeInsets(top: -5, left: 0, bottom: 5, right: 0)
         
-        cameraLabel.text = "Camera"
+        cameraBtn.setImage(UIImage(named: "camera_gray"), for: .normal)
+//        cameraBtn.layer.shadowColor = UIColor.gray.cgColor
+//        cameraBtn.layer.shadowOpacity = 0.8
+//        cameraBtn.layer.shadowOffset = CGSize(width: 2, height: 2)
+//        cameraBtn.layer.shadowRadius = 0.2
+//        cameraBtn.imageEdgeInsets = UIEdgeInsets(top: -5, left: 0, bottom: 5, right: 0)
+        
+        cameraLabel.text = "카메라"
         cameraLabel.font = .systemFont(ofSize: 12, weight: .medium)
-        cameraLabel.textColor = .white
+        cameraLabel.textColor = UIColor(red:0.40, green:0.40, blue:0.40, alpha:1.0)
         
         
         
-        translateContainerView.backgroundColor = #colorLiteral(red: 0.7473826142, green: 0.7473826142, blue: 0.7473826142, alpha: 0.4949700342)
+        translateContainerView.backgroundColor = UIColor(red:0.00, green:0.67, blue:0.76, alpha:0.3)
+//        translateContainerView.backgroundColor = .clear
         
-        translateBtn.setImage(UIImage(named: "translateIcon"), for: .normal)
+        translateBtn.setImage(UIImage(named: "tranlsateIcon2"), for: .normal)
         translateBtn.addTarget(self, action: #selector(translateBtnDidTap(_:)), for: .touchUpInside)
         
         translateFromBtn.setTitle("Korean", for: .normal)
-        translateFromBtn.titleLabel?.font = .systemFont(ofSize: 13)
+        translateFromBtn.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
         translateFromBtn.setTitleColor(.black, for: .normal)
-        translateFromBtn.backgroundColor = .yellow
+//        translateFromBtn.backgroundColor = .yellow
         translateFromBtn.tag = 0
         translateFromBtn.addTarget(self, action: #selector(translateDropDownBtnDidTap(_:)), for: .touchUpInside)
         
         translateToBtn.setTitle("English", for: .normal)
         translateToBtn.setTitleColor(.black, for: .normal)
-        translateToBtn.titleLabel?.font = .systemFont(ofSize: 13)
-        translateToBtn.backgroundColor = .yellow
+        translateToBtn.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
+//        translateToBtn.backgroundColor = .yellow
         translateToBtn.tag = 1
         translateToBtn.addTarget(self, action: #selector(translateDropDownBtnDidTap(_:)), for: .touchUpInside)
         

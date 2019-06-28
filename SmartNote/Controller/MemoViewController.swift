@@ -196,7 +196,7 @@ class MemoViewController: UIViewController {
             
         } else {    // 완료 버튼 클릭시
             memoView.textView.resignFirstResponder()
-        
+            memoView.textView.centerVertically()
         }
     }
     
@@ -230,28 +230,33 @@ extension MemoViewController: UIImagePickerControllerDelegate, UINavigationContr
         controller.sourceType = sourceType
         controller.mediaTypes = [String(kUTTypeImage)]
         
-        let transition = CATransition()
-        transition.duration = 0.15
-        transition.type = CATransitionType.push
-        transition.subtype = CATransitionSubtype.fromLeft
-//        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeInEaseOut)
-        view.window!.layer.add(transition, forKey: kCATransition)
+        if sourceType == .photoLibrary {
+            present(controller, animated: true, completion: nil)
+        } else {
+            let transition = CATransition()
+            transition.duration = 0.15
+            transition.type = CATransitionType.push
+            transition.subtype = CATransitionSubtype.fromLeft
+            //        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeInEaseOut)
+            view.window!.layer.add(transition, forKey: kCATransition)
+            
+            present(controller, animated: false, completion: nil)
+        }
         
-        present(controller, animated: false, completion: nil)
     }
     
    
-
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        print("imagepickerControllerDidCancel")
-        let transition = CATransition()
-        transition.duration = 0.15
-        transition.type = CATransitionType.push
-        transition.subtype = CATransitionSubtype.fromRight
-        picker.view.window!.layer.add(transition, forKey: kCATransition)
-
-        dismiss(animated: false)
-    }
+//
+//    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+//        print("imagepickerControllerDidCancel")
+//        let transition = CATransition()
+//        transition.duration = 0.15
+//        transition.type = CATransitionType.push
+//        transition.subtype = CATransitionSubtype.fromRight
+//        picker.view.window!.layer.add(transition, forKey: kCATransition)
+//
+//        dismiss(animated: false)
+//    }
     
     
 
