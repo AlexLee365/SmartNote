@@ -8,8 +8,6 @@
 import UIKit
 import CoreData
 
-
-
 class MemoListViewController: UIViewController {
     
     let titleImageView = UIImageView(image: UIImage(named: "smartmemo_black"))

@@ -37,6 +37,8 @@ class DetailMemoViewController: UIViewController {
     
     private func configure() {
         
+        title = "메모 보기"
+        
         detailTextView.delegate = self
         
         let shareRightBarBtn = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareButtonDidTap(_:)))
