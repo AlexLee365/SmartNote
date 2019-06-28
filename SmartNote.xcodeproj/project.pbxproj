@@ -22,6 +22,9 @@
 		43017B8822C4AEC0001B7D69 /* MemoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43017B8722C4AEC0001B7D69 /* MemoData.swift */; };
 		43017B9422C53042001B7D69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43017B9322C53042001B7D69 /* Assets.xcassets */; };
 		8D2509C922C4CE74009A5A41 /* DetailMemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D2509C822C4CE74009A5A41 /* DetailMemoViewController.swift */; };
+		8D7C530722C5D9550055641C /* breakfastDEMO.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8D7C530622C5D93C0055641C /* breakfastDEMO.otf */; };
+		8D7C530922C5DB450055641C /* BMJUA_otf.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8D7C530822C5DB440055641C /* BMJUA_otf.otf */; };
+		8D7C533022C5DE010055641C /* Binggrae.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8D7C532F22C5DE010055641C /* Binggrae.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +45,9 @@
 		43017B9322C53042001B7D69 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6E1F3F259C18C7104FEEC827 /* Pods_SmartNote.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SmartNote.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D2509C822C4CE74009A5A41 /* DetailMemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMemoViewController.swift; sourceTree = "<group>"; };
+		8D7C530622C5D93C0055641C /* breakfastDEMO.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = breakfastDEMO.otf; path = "../../../../../../Downloads/breakfast-demo/breakfastDEMO.otf"; sourceTree = "<group>"; };
+		8D7C530822C5DB440055641C /* BMJUA_otf.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = BMJUA_otf.otf; path = ../../../../../../Downloads/BMJUA_otf.otf; sourceTree = "<group>"; };
+		8D7C532F22C5DE010055641C /* Binggrae.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Binggrae.otf; path = ../../../../../../Downloads/Binggrae.otf; sourceTree = "<group>"; };
 		D7B6A93DF23AF7CBA28AB018 /* Pods-SmartNote.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SmartNote.release.xcconfig"; path = "Target Support Files/Pods-SmartNote/Pods-SmartNote.release.xcconfig"; sourceTree = "<group>"; };
 		EF214509A2C9A846F1F22B9A /* Pods-SmartNote.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SmartNote.debug.xcconfig"; path = "Target Support Files/Pods-SmartNote/Pods-SmartNote.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -87,6 +93,9 @@
 				43017B3F22C2163F001B7D69 /* LaunchScreen.storyboard */,
 				43017B4222C2163F001B7D69 /* Info.plist */,
 				43017B9322C53042001B7D69 /* Assets.xcassets */,
+				8D7C530622C5D93C0055641C /* breakfastDEMO.otf */,
+				8D7C530822C5DB440055641C /* BMJUA_otf.otf */,
+				8D7C532F22C5DE010055641C /* Binggrae.otf */,
 			);
 			path = SmartNote;
 			sourceTree = "<group>";
@@ -217,6 +226,9 @@
 			files = (
 				43017B9422C53042001B7D69 /* Assets.xcassets in Resources */,
 				43017B4122C2163F001B7D69 /* LaunchScreen.storyboard in Resources */,
+				8D7C533022C5DE010055641C /* Binggrae.otf in Resources */,
+				8D7C530722C5D9550055641C /* breakfastDEMO.otf in Resources */,
+				8D7C530922C5DB450055641C /* BMJUA_otf.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

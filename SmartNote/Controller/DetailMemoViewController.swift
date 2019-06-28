@@ -20,6 +20,7 @@ class DetailMemoViewController: UIViewController {
     }()
     
     let detailTextView = UITextView()
+    let lastEditedLabel = UILabel()
     let dateLabel = UILabel()
 
     var detailMemo: MemoData?
@@ -36,6 +37,8 @@ class DetailMemoViewController: UIViewController {
     
     private func configure() {
         
+        title = "메모 보기"
+        
         detailTextView.delegate = self
         
         let shareRightBarBtn = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareButtonDidTap(_:)))
@@ -43,10 +46,15 @@ class DetailMemoViewController: UIViewController {
         navigationItem.rightBarButtonItems = [shareRightBarBtn]
         
         detailTextView.backgroundColor = .clear
-        detailTextView.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        detailTextView.font = UIFont(name: "Binggrae", size: 17)
         detailTextView.text = detailMemo?.text
         detailTextView.autocorrectionType = .no
         view.addSubview(detailTextView)
+        
+        lastEditedLabel.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
+        lastEditedLabel.text = "마지막 수정"
+        lastEditedLabel.textColor = .lightGray
+        view.addSubview(lastEditedLabel)
         
         dateLabel.textColor = .lightGray
         dateLabel.font = UIFont.systemFont(ofSize: 15)
@@ -56,7 +64,6 @@ class DetailMemoViewController: UIViewController {
     
     
     @objc func completeRightBarBtnDidTap(_ sender: UIBarButtonItem) {
-        print("completeRightBarBtnDidTap")
         
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MemoCoreData")
         let pred = NSPredicate(format: "(uniqueKey = %@)", detailMemo!.uniqueKey)
@@ -78,9 +85,8 @@ class DetailMemoViewController: UIViewController {
         detailTextView.resignFirstResponder()
     }
     
+    
     @objc func shareButtonDidTap(_ sender: UIBarButtonItem) {
-        
-        print("shareButtonDidTap")
         
         let vc = UIActivityViewController(
             activityItems: [detailTextView.text ?? ""],
@@ -88,6 +94,7 @@ class DetailMemoViewController: UIViewController {
         
         present(vc, animated: true, completion: nil)
     }
+    
     
     private func setAutolayout() {
         let guide = view.safeAreaLayoutGuide
@@ -98,11 +105,16 @@ class DetailMemoViewController: UIViewController {
         detailTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         detailTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         
+        lastEditedLabel.translatesAutoresizingMaskIntoConstraints = false
+        lastEditedLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        lastEditedLabel.topAnchor.constraint(equalTo: guide.topAnchor, constant: 10).isActive = true
+        
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        dateLabel.topAnchor.constraint(equalTo: guide.topAnchor, constant: 10).isActive = true
-        dateLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        dateLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        dateLabel.topAnchor.constraint(equalTo: lastEditedLabel.bottomAnchor, constant: 2).isActive = true
     }
 }
+
 
 // MARK: - UITextViewDelegate
 
