@@ -9,6 +9,8 @@
 import Foundation
 import CoreData
 
+var pinnedMemoKeyArray = [String]()
+
 class MemoData {
     var uniqueKey: String
     var date: Date

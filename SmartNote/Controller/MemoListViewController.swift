@@ -8,6 +8,8 @@
 import UIKit
 import CoreData
 
+
+
 class MemoListViewController: UIViewController {
     
     let titleImageView = UIImageView(image: UIImage(named: "smartmemo"))
@@ -17,6 +19,8 @@ class MemoListViewController: UIViewController {
     var memoArray = [MemoData]()
     
     let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    let noti = NotificationCenter.default
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,16 +42,18 @@ class MemoListViewController: UIViewController {
             for nsManagedObject in objects {
                 guard let coreData = nsManagedObject as? MemoCoreData else { print("coreData convert Error"); return }
                 
-                print("Date: \(coreData.date!) / UniqueKey: \(coreData.uniqueKey!) / Text: \(coreData.text!)")
+                print("Date: \(coreData.date!) / UniqueKey: \(coreData.uniqueKey!) / Text: \(coreData.text!) / isPinned: \(coreData.isPinned) / isLocked: \(coreData.isLocked)")
                 
                 let memoDataFromCoreData = convertMemoDataFromCoreData(coreData)
-                memoArray.append(memoDataFromCoreData)
+                
+                memoDataFromCoreData.isPinned ? memoArray.insert(memoDataFromCoreData, at: 0) : memoArray.append(memoDataFromCoreData)
+                // isPinned가 true이면 memoArray에 가장 첫번째 행에 insert(tableView의 가장 상단에 위치) false이면 그냥 맨 뒤에 append
             }
             
         }catch let error as NSError {
             print("‼️‼️‼️ : ", error.localizedDescription)
         }
-        tableView.reloadData()
+        self.tableView.reloadData()
     }
     
     // shows search bar without scrolling up
@@ -85,7 +91,11 @@ class MemoListViewController: UIViewController {
         tableView.register(MemoListCell.self, forCellReuseIdentifier: "MemoListCell")
         tableView.rowHeight = 60
         tableView.backgroundColor = .white
+        tableView.separatorColor = UIColor(red:0.30, green:0.82, blue:0.88, alpha:0.6)
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 10)
         view.addSubview(tableView)
+        
+        
     }
     
     // MARK: - auto layout
@@ -126,6 +136,8 @@ extension MemoListViewController: UITableViewDataSource {
         cell.descriptionLabel.text = memoArray[indexPath.row].returnTitleAndBody().1
         cell.dateLabel.text = formatter.string(from: memoArray[indexPath.row].date)
         cell.noteIcon.image = UIImage(named: "noteIcon")
+        cell.pinImageView.image = memoArray[indexPath.row].isPinned ? UIImage(named: "isPinned") : UIImage()
+        
         
         return cell
     }
@@ -159,9 +171,97 @@ extension MemoListViewController: UITableViewDataSource {
         // 핀고정 버튼 클릭시
         let pinTopAction = UIContextualAction(style: .normal, title: "핀 고정") { (ac: UIContextualAction, view: UIView, success: (Bool) -> Void) in
             
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MemoCoreData")
+            let pred = NSPredicate(format: "(uniqueKey = %@)", currentMemoUniqueKey)
+            request.predicate = pred
             
+            do {
+                let objects = try self.managedObjectContext.fetch(request) as! [NSManagedObject]
+                guard objects.count > 0 else { print("There's no objects"); return }
+                
+                let value = self.memoArray[indexPath.row].isPinned ? false : true // 현재 isPinned값이 true이면 false로, false이면 true로 변경하여 저장
+                objects.first!.setValue(value, forKey: "isPinned")
+                
+                try self.managedObjectContext.save()
+            }catch let error as NSError {
+                print("‼️‼️‼️ : ", error.localizedDescription)
+            }
             
+            if self.memoArray[indexPath.row].isPinned == false {    // isPinned false=>True 핀하려고 눌렀을때
+                // =================================== 시간차를 두고 Action을 주기위한 방법1  ===================================
+//                let group = DispatchGroup()
+//                let queue1 = DispatchQueue.main
+//                let queue2 = DispatchQueue(label: "queue2")
+//
+//                queue1.async(group: group) {
+//                    UIView.animate(withDuration: 0.7, animations: {
+//                        self.tableView.moveRow(at: indexPath, to: IndexPath(row: 0, section: 0))
+//
+//                    })
+//                }
+//
+//                queue2.async(group: group) {
+////                    for _ in 0...10000 { _ = 1 + 1 }
+//                    UIView.animate(withDuration: 0.7, delay: 1, options: [], animations: {
+//
+//                    })
+//                }
+//
+//                group.notify(queue: .main, execute: {
+//                    self.getCoreData()
+//                })
+                
+                // =================================== 방법2 ===================================
+                UIView.animate(withDuration: 0.7, animations: {
+                    self.tableView.moveRow(at: indexPath, to: IndexPath(row: 0, section: 0))
+                })
+                
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.5, execute: {
+                    self.getCoreData()
+                })
+                // =================================== ===================================
+                
+                
+              
+                
+                
+            } else {    // 핀설정을 해제할때
+                var indexAfterPinnedOut = 0
+                
+                let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MemoCoreData")
+                
+                do {
+                    let objects = try self.managedObjectContext.fetch(request) as! [NSManagedObject]
+                    
+                    guard objects.count > 0 else { print("There's no objects"); return }
+                    
+                    var pinnedMemoDatasBehindCurrentMemoData = 0   // CoreData에서 내가 핀해제하려는 Memo데이터 뒤에 pinned되어있는 메모가 몇개있는지 세어주기위함
+                    for index in (0..<objects.count).reversed() {
+                        
+                        guard let coreData = objects[index] as? MemoCoreData else { print("coreData convert Error"); return }
+                        guard coreData.isPinned == false else { pinnedMemoDatasBehindCurrentMemoData += 1; continue }
+                        
+                        if self.memoArray[indexPath.row].uniqueKey == coreData.uniqueKey {
+                            indexAfterPinnedOut = index + pinnedMemoDatasBehindCurrentMemoData
+                            // pinnedMemoDatasBehindCurrentMemoData를 더해준 이유: 내뒤에 있는 메모들이 핀되었다면 앞의 index로 이동해있을 것이기때문에
+                            // 그만큼 더해준 index의 위치로 이동시키기 위함
+                        }
+                    }
+                    
+                }catch let error as NSError {
+                    print("‼️‼️‼️ : ", error.localizedDescription)
+                }
+                
+                UIView.animate(withDuration: 0.7, animations: {
+                    self.tableView.moveRow(at: indexPath, to: IndexPath(row: indexAfterPinnedOut, section: 0))
+                })
+                
+                DispatchQueue.main.asyncAfter(deadline: .now()+0.5, execute: {
+                    self.getCoreData()
+                })
+            }
             success(true)
+            
         }
         pinTopAction.image = UIImage(named: "pin")
         pinTopAction.backgroundColor = UIColor(red:0.00, green:0.72, blue:0.83, alpha:1.0)
@@ -239,6 +339,7 @@ extension MemoListViewController: UITableViewDataSource {
         return configuration
     }
     
+    
     func makeAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let action1 = UIAlertAction(title: "OK", style: .default) { _ in }
@@ -296,8 +397,15 @@ extension MemoListViewController: UITableViewDelegate {
 extension MemoListViewController: UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
+        print("updateSearchResults")
+//        let cell = tableView.cellForRow(at: IndexPath(row: 4, section: 0))!
+        
+//        UIView.animate(withDuration: 0.6) {
+//            self.tableView.moveRow(at: IndexPath(row: 4, section: 0), to: IndexPath(row: 0, section: 0))
+//        }
         
     }
+    
 }
 
 // MARK: - UISearchBarDelegate

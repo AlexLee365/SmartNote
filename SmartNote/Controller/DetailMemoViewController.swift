@@ -64,9 +64,12 @@ class DetailMemoViewController: UIViewController {
         
         do {
             let objects = try managedObjectContext.fetch(request) as! [NSManagedObject]
-            
+            let date = Date()
+            let nsDate = NSDate()
             guard objects.count > 0 else { print("There's no objects"); return }
             objects.first!.setValue(detailTextView.text, forKey: "text")
+            objects.first!.setValue(nsDate, forKey: "date")
+            dateLabel.text = formatter.string(from: date)
             try managedObjectContext.save()
         }catch let error as NSError {
             print("‼️‼️‼️ : ", error.localizedDescription)

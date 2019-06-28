@@ -15,6 +15,8 @@ class MemoListCell: UITableViewCell {
     let descriptionLabel = UILabel()
     let noteIcon = UIImageView()
     
+    let pinImageView = UIImageView()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -65,5 +67,12 @@ class MemoListCell: UITableViewCell {
         descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5).isActive = true
         descriptionLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor).isActive = true
         descriptionLabel.trailingAnchor.constraint(equalTo: dateLabel.leadingAnchor, constant: -30).isActive = true
+        
+        contentView.addSubview(pinImageView)
+        pinImageView.translatesAutoresizingMaskIntoConstraints = false
+        pinImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5).isActive = true
+        pinImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 3).isActive = true
+        pinImageView.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        pinImageView.heightAnchor.constraint(equalTo: pinImageView.widthAnchor, constant: 0).isActive = true
     }
 }
