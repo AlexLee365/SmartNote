@@ -279,9 +279,16 @@ extension MemoViewController: UIImagePickerControllerDelegate, UINavigationContr
                 guard let ocrResult = ocrResult else { print("fixedImage ocrResult convert error!"); return }
                 print("viewcontroller ocrResult: ", ocrResult)
                 
-                ocrResult.annotations.forEach{
-                    self.memoView.textView.text += $0.text
-                }
+                var text = ""
+                print("--------------------------[]--------------------------")
+                self.memoView.textView.text = ocrResult.annotations.first?.text
+//                ocrResult.annotations.forEach{
+//                    print("$$")
+//                    text += $0.text
+//                    text.removeLast()
+//                    self.memoView.textView.text = text
+//                    print(text)
+//                }
                 self.notiCenter.post(Notification(name: Notification.Name("textViewEditingEnd")))
             }
         }
