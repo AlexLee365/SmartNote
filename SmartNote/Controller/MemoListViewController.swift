@@ -164,24 +164,67 @@ extension MemoListViewController: UITableViewDataSource {
         let currentMemoUniqueKey = self.memoArray[indexPath.row].uniqueKey   // 현재 선택한 셀의 UniqueKey
         
         // 삭제 버튼 클릭시
-        let deleteAction = UIContextualAction(style: .destructive, title: "삭제") { (ac: UIContextualAction, view: UIView, success: (Bool) -> Void) in
-            
+        let deleteAction = UIContextualAction(style: .destructive, title: "삭제") { (ac: UIContextualAction, view: UIView, success: @escaping (Bool) -> Void) in
             
             let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MemoCoreData")
             let pred = NSPredicate(format: "(uniqueKey = %@)", currentMemoUniqueKey)
             request.predicate = pred
-
-            do {
-                let objects = try self.managedObjectContext.fetch(request) as! [NSManagedObject]
-                guard objects.count > 0 else { print("There's no objects"); return }
-                self.managedObjectContext.delete(objects.first!)
-                try self.managedObjectContext.save()
+            
+            func deleteAlert(title: String, message: String) {
+                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
                 
-            }catch let error as NSError {
-                print("‼️‼️‼️ : ", error.localizedDescription)
+                alert.addTextField(configurationHandler: { textField in
+                    textField.placeholder = "암호"
+                    textField.isSecureTextEntry = true
+                })
+                
+                let okAction = UIAlertAction(title: "확인", style: .default) { _ in
+                    
+                    if alert.textFields?.first?.text == self.memoArray[indexPath.row].password {
+                        
+                        do {
+                            print("password correct")
+                            let objects = try self.managedObjectContext.fetch(request) as! [NSManagedObject]
+                            guard objects.count > 0 else { print("There's no objects"); return }
+                            self.managedObjectContext.delete(objects.first!)
+                            try self.managedObjectContext.save()
+                            success(true)
+                        } catch let error as NSError {
+                            print("‼️‼️‼️ : ", error.localizedDescription)
+                        }
+                
+                    } else {
+                        
+                        deleteAlert(title: "메모 삭제", message: "암호가 올바르지 않습니다. 다시 시도하십시오.")
+                        success(false)
+                    }
+                }
+                
+                let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+                
+                alert.addAction(okAction); alert.addAction(cancelAction)
+                self.present(alert, animated: true)
             }
-            success(true)
+            
+            
+            if self.memoArray[indexPath.row].isLocked == true {
+                deleteAlert(title: "메모 삭제", message: "잠긴 메모를 삭제하려면 사용자의 현재 암호를 입력하십시오.")
+
+            } else {
+                do {
+                    let objects = try self.managedObjectContext.fetch(request) as! [NSManagedObject]
+                    guard objects.count > 0 else { print("There's no objects"); return }
+                    self.managedObjectContext.delete(objects.first!)
+                    try self.managedObjectContext.save()
+                    
+                } catch let error as NSError {
+                    print("‼️‼️‼️ : ", error.localizedDescription)
+                }
+                success(true)
+            }
         }
+        
+        
         
         deleteAction.image = UIImage(named: "trash")
         deleteAction.backgroundColor = UIColor(red:0.72, green:0.11, blue:0.11, alpha:1.0)
@@ -381,28 +424,40 @@ extension MemoListViewController: UITableViewDataSource {
 extension MemoListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        var data = [MemoData]()
+
+        switch isStart {
+        case true:
+            data = filteredMemoArray
+        case false:
+            data = memoArray
+        }
+        
         let detailMemoVC = DetailMemoViewController()
-        detailMemoVC.detailMemo = memoArray[indexPath.row]
+        detailMemoVC.detailMemo = data[indexPath.row]
         
         // 메모가 잠겨있는 상태이면
-        if memoArray[indexPath.row].isLocked == true {
+        if data[indexPath.row].isLocked == true {
             
             let alert = UIAlertController(title: "This is locked Memo", message: "Input your Password", preferredStyle: .alert)
+            
             let action1 = UIAlertAction(title: "OK", style: .default) { _ in
                 // 비밀번호 재확인 Alert창
-                guard alert.textFields?.first?.text == self.memoArray[indexPath.row].password else {
+                guard alert.textFields?.first?.text == data[indexPath.row].password else {
                     self.makeAlert(title: "Failed", message: "This is Wrong Password")
                     alert.dismiss(animated: true, completion: nil)
                     return
                 }
                 self.navigationController?.pushViewController(detailMemoVC, animated: true)
             }
+            
             let action2 = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
             alert.addTextField { (textField) in
                 textField.placeholder = "비밀번호를 입력하세요"
                 textField.isSecureTextEntry = true
             }
-            
             
             alert.addAction(action1); alert.addAction(action2)
             self.present(alert, animated: true)
@@ -425,11 +480,12 @@ extension MemoListViewController: UISearchResultsUpdating {
 // MARK: - UISearchBarDelegate
 
 extension MemoListViewController: UISearchBarDelegate {
-
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         if searchBar.text == "" {
             filteredMemoArray = memoArray
+            isStart = false
         } else if !searchText.isEmpty {
             filteredMemoArray = memoArray.filter { $0.text.contains(searchText) }
         }
@@ -443,6 +499,4 @@ extension MemoListViewController: UISearchBarDelegate {
         filteredMemoArray = memoArray
         tableView.reloadData()
     }
-    
-    
 }
