@@ -25,6 +25,7 @@
 		4353B81E22C5E94E004BD807 /* BMJUA_otf.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4353B81A22C5E8FB004BD807 /* BMJUA_otf.otf */; };
 		4353B81F22C5E951004BD807 /* breakfastDEMO.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4353B81B22C5E8FC004BD807 /* breakfastDEMO.otf */; };
 		4353B82122C5FCC4004BD807 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4353B82022C5FCC3004BD807 /* Assets.xcassets */; };
+		4353B88422CCD348004BD807 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4353B88322CCD348004BD807 /* CameraController.swift */; };
 		8D2509C922C4CE74009A5A41 /* DetailMemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D2509C822C4CE74009A5A41 /* DetailMemoViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -48,6 +49,7 @@
 		4353B81B22C5E8FC004BD807 /* breakfastDEMO.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = breakfastDEMO.otf; sourceTree = "<group>"; };
 		4353B81C22C5E8FC004BD807 /* Binggrae.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Binggrae.otf; sourceTree = "<group>"; };
 		4353B82022C5FCC3004BD807 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4353B88322CCD348004BD807 /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 		6E1F3F259C18C7104FEEC827 /* Pods_SmartNote.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SmartNote.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D2509C822C4CE74009A5A41 /* DetailMemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMemoViewController.swift; sourceTree = "<group>"; };
 		D7B6A93DF23AF7CBA28AB018 /* Pods-SmartNote.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SmartNote.release.xcconfig"; path = "Target Support Files/Pods-SmartNote/Pods-SmartNote.release.xcconfig"; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 		43017B4A22C342BE001B7D69 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				4353B88322CCD348004BD807 /* CameraController.swift */,
 				43017B5422C37C9D001B7D69 /* GoogleCloudOCRModel.swift */,
 				43017B5622C37CF4001B7D69 /* GoogleCloudOCR.swift */,
 				43017B8722C4AEC0001B7D69 /* MemoData.swift */,
@@ -305,6 +308,7 @@
 				43017B5022C36700001B7D69 /* MemoListCell.swift in Sources */,
 				43017B5722C37CF4001B7D69 /* GoogleCloudOCR.swift in Sources */,
 				43017B5522C37C9E001B7D69 /* GoogleCloudOCRModel.swift in Sources */,
+				4353B88422CCD348004BD807 /* CameraController.swift in Sources */,
 				43017B7822C38BC4001B7D69 /* UIExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
