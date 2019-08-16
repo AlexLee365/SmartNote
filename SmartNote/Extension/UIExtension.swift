@@ -43,5 +43,25 @@ extension UIImage {
         
         return newImage
     }
+    
+    func cropImage(viewFrameToScaleFromImage: CGRect) -> UIImage? {
+        let image = self
+        print("원본 이미지 사이즈: ",image.size)
+        let scaledImageWidth = image.size.width
+        let scaledImageHeight = image.size.width * (viewFrameToScaleFromImage.size.height / viewFrameToScaleFromImage.size.width)
+        // 이미지의 넓이 * (카메라가 보여지는 뷰의 프레임의 비율 = 높이 / 넓이)
+        
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: scaledImageWidth, height: scaledImageHeight), true, 0.0)
+        
+        let upsideGap = (image.size.height - scaledImageHeight) / 2
+        
+        print("cropImageNotUsingCGImage: ", upsideGap)
+        image.draw(at: CGPoint(x: 0, y: -upsideGap))
+        
+        let croppedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return croppedImage
+    }
 }
 

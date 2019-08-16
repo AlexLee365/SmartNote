@@ -73,13 +73,19 @@ func convertMemoDataFromCoreData(_ coreData: MemoCoreData) -> MemoData{
 }
 
 func saveCoreDataFromMemoData(coreData: MemoCoreData, memoData: MemoData) {
-    var memoCoreDataObject = coreData
+//    var memoCoreDataObject = coreData
+//
+//    memoCoreDataObject.uniqueKey = memoData.uniqueKey
+//    memoCoreDataObject.date = memoData.date
+//    memoCoreDataObject.text = memoData.text
+//    memoCoreDataObject.isLocked = memoData.isLocked
+//    memoCoreDataObject.password = memoData.password
+//    memoCoreDataObject.isPinned = memoData.isPinned
     
-    memoCoreDataObject.uniqueKey = memoData.uniqueKey
-    memoCoreDataObject.date = memoData.date
-    memoCoreDataObject.text = memoData.text
-    memoCoreDataObject.isLocked = memoData.isLocked
-    memoCoreDataObject.password = memoData.password
-    memoCoreDataObject.isPinned = memoData.isPinned
-    
+        coreData.uniqueKey = memoData.uniqueKey
+        coreData.date = memoData.date
+        coreData.text = memoData.text
+        coreData.isLocked = memoData.isLocked
+        coreData.password = memoData.password
+        coreData.isPinned = memoData.isPinned
 }

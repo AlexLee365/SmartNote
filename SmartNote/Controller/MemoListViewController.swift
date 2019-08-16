@@ -28,39 +28,9 @@ class MemoListViewController: UIViewController {
         setAutoLayout()
     }
     
-    func getCoreData() {        // 저장된 CoreData에서 불러와 테이블뷰에 뿌려줄 memoArray에 값 추가해주는 메소드
-        memoArray.removeAll()
-        
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MemoCoreData")
-        
-        do {
-            let objects = try managedObjectContext.fetch(request) as! [NSManagedObject]
-            print("🔵🔵🔵 Load Data: ", objects)
-            
-            guard objects.count > 0 else { print("There's no objects"); return }
-            for nsManagedObject in objects {
-                guard let coreData = nsManagedObject as? MemoCoreData else { print("coreData convert Error"); return }
-                
-                print("Date: \(coreData.date!) / UniqueKey: \(coreData.uniqueKey!) / Text: \(coreData.text!) / isPinned: \(coreData.isPinned) / isLocked: \(coreData.isLocked)")
-                
-                let memoDataFromCoreData = convertMemoDataFromCoreData(coreData)
-                
-                memoDataFromCoreData.isPinned ? memoArray.insert(memoDataFromCoreData, at: 0) : memoArray.append(memoDataFromCoreData)
-                // isPinned가 true이면 memoArray에 가장 첫번째 행에 insert(tableView의 가장 상단에 위치) false이면 그냥 맨 뒤에 append
-            }
-            
-        }catch let error as NSError {
-            print("‼️‼️‼️ : ", error.localizedDescription)
-        }
-        self.tableView.reloadData()
-    }
-    
-    
-    
     // shows search bar without scrolling up
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         getCoreData()
         navigationItem.hidesSearchBarWhenScrolling = false
     }
@@ -76,6 +46,7 @@ class MemoListViewController: UIViewController {
     // MARK: - configuration
     
     private func configure() {
+        view.backgroundColor = .white
         navigationItem.titleView = titleImageView
         titleImageView.contentMode = .scaleAspectFit
         
@@ -110,6 +81,33 @@ class MemoListViewController: UIViewController {
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+    }
+    
+    func getCoreData() {        // 저장된 CoreData에서 불러와 테이블뷰에 뿌려줄 memoArray에 값 추가해주는 메소드
+        memoArray.removeAll()
+        
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "MemoCoreData")
+        
+        do {
+            let objects = try managedObjectContext.fetch(request) as! [NSManagedObject]
+            print("🔵🔵🔵 Load Data: ", objects)
+            
+            guard objects.count > 0 else { print("There's no objects"); return }
+            for nsManagedObject in objects {
+                guard let coreData = nsManagedObject as? MemoCoreData else { print("coreData convert Error"); return }
+                
+                print("Date: \(coreData.date!) / UniqueKey: \(coreData.uniqueKey!) / Text: \(coreData.text!) / isPinned: \(coreData.isPinned) / isLocked: \(coreData.isLocked)")
+                
+                let memoDataFromCoreData = convertMemoDataFromCoreData(coreData)
+                
+                memoDataFromCoreData.isPinned ? memoArray.insert(memoDataFromCoreData, at: 0) : memoArray.append(memoDataFromCoreData)
+                // isPinned가 true이면 memoArray에 가장 첫번째 행에 insert(tableView의 가장 상단에 위치) false이면 그냥 맨 뒤에 append
+            }
+            
+        }catch let error as NSError {
+            print("‼️‼️‼️ : ", error.localizedDescription)
+        }
+        self.tableView.reloadData()
     }
 }
 

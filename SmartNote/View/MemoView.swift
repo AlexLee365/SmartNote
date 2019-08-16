@@ -28,14 +28,12 @@ class MemoView: UIView {
     let galleryLabel = UILabel()
     let cameraLabel = UILabel()
     let translateBtn = UIButton()
-    
-    
+
     let translateContainerView = UIView()
     let translateFromBtn = UIButton()
     let underlineUIView = UIView()
     let underlineUIView2 = UIView()
     let translateToBtn = UIButton()
-    
     
     // MARK: - Properties
     var isTextViewHasText = false {
@@ -79,17 +77,14 @@ class MemoView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         print("--------------------------[MemoView init]--------------------------")
-        
         setAutoLayout()
         configureViewsOptions()
-        
     }
     
     let notiCenter = NotificationCenter.default
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-        
     }
     
     private func setAutoLayout() {
@@ -187,7 +182,6 @@ class MemoView: UIView {
         albumBtn.widthAnchor.constraint(equalToConstant: buttonSize).isActive = true
         albumBtn.heightAnchor.constraint(equalToConstant: buttonSize).isActive = true
         
-        
         self.addSubview(galleryLabel)
         galleryLabel.translatesAutoresizingMaskIntoConstraints = false
         galleryLabel.centerXAnchor.constraint(equalTo: albumBtn.centerXAnchor, constant: 0).isActive = true
@@ -208,7 +202,6 @@ class MemoView: UIView {
     
     private func configureViewsOptions() {
         print("--------------------------[MemoView configureViewOptions]--------------------------")
-        
         textContainerView.backgroundColor = #colorLiteral(red: 0.9764593244, green: 0.9706541896, blue: 0.9809214473, alpha: 1)
         textContainerView.layer.shadowColor = UIColor.gray.cgColor
         textContainerView.layer.shadowOpacity = 0.8
@@ -223,7 +216,6 @@ class MemoView: UIView {
         textViewPlaceHolderLabel.font = UIFont.systemFont(ofSize: 15)
         textViewPlaceHolderLabel.text = "Detected text can be edited here"
         textViewPlaceHolderLabel.textColor = #colorLiteral(red: 0.5864446886, green: 0.6151993181, blue: 0.6221644987, alpha: 0.8590004281)
-        
         
         saveInfoLabel.font = .systemFont(ofSize: 11, weight: .semibold)
         saveInfoLabel.textColor = #colorLiteral(red: 0.6031692624, green: 0.5995866656, blue: 0.6059251428, alpha: 0.903119649)
@@ -248,9 +240,6 @@ class MemoView: UIView {
         galleryLabel.font = .systemFont(ofSize: 12, weight: .medium)
         galleryLabel.textColor = UIColor(red:0.40, green:0.40, blue:0.40, alpha:1.0)
         
-        
-        
-        
         cameraBtn.setImage(UIImage(named: "camera_gray"), for: .normal)
 //        cameraBtn.layer.shadowColor = UIColor.gray.cgColor
 //        cameraBtn.layer.shadowOpacity = 0.8
@@ -261,8 +250,6 @@ class MemoView: UIView {
         cameraLabel.text = "카메라"
         cameraLabel.font = .systemFont(ofSize: 12, weight: .medium)
         cameraLabel.textColor = UIColor(red:0.40, green:0.40, blue:0.40, alpha:1.0)
-        
-        
         
         translateContainerView.backgroundColor = UIColor(red:0.00, green:0.67, blue:0.76, alpha:0.3)
 //        translateContainerView.backgroundColor = .clear
@@ -283,8 +270,6 @@ class MemoView: UIView {
 //        translateToBtn.backgroundColor = .yellow
         translateToBtn.tag = 1
         translateToBtn.addTarget(self, action: #selector(translateDropDownBtnDidTap(_:)), for: .touchUpInside)
-        
-        
         
         dropDownTransFrom.anchorView = translateFromBtn
         dropDownTransFrom.bottomOffset = CGPoint(x: 0, y:(dropDownTransFrom.anchorView?.plainView.bounds.height)!)
@@ -307,18 +292,10 @@ class MemoView: UIView {
         }
     }
     
-    
-    override func didMoveToSuperview() {
-        super.didMoveToSuperview()
-        print("--------------------------[MemoView didMoveToSuperView]--------------------------")
-    }
-    
     var autolayoutFlag = false
-    
     override func layoutSubviews() {
         super.layoutSubviews()
         print("--------------------------[Memoview layoutSubview]--------------------------")
-        
         if autolayoutFlag == false {
             print(translateBtn.frame.size)
             
@@ -433,14 +410,12 @@ extension MemoView: UITextViewDelegate {
         textView.centerVertically()
         
         guard !textView.text.isEmpty else {
-            
             UIView.animate(withDuration: 0.5, animations: {
                 self.saveInfoContainerView.layer.opacity = 0
             }) { (_) in
                 self.saveInfoContainerView.isHidden = true
                 self.isSaved = true
             }
-            
             return
         }
         
@@ -453,10 +428,5 @@ extension MemoView: UITextViewDelegate {
             })
         }
         isSaved = false
-        
-        
     }
-    
-    
-    
 }

@@ -186,9 +186,6 @@ extension CameraController {
         self.photoOutput?.capturePhoto(with: settings, delegate: self)
         self.photoCaptureCompletionBlock = completion
     }
-    
-    
-    
 }
 
 extension CameraController: AVCapturePhotoCaptureDelegate {
@@ -205,8 +202,6 @@ extension CameraController: AVCapturePhotoCaptureDelegate {
             self.photoCaptureCompletionBlock?(nil, CameraControllerError.unknown)
         }
     }
-    
-    
 }
 
 extension CameraController {

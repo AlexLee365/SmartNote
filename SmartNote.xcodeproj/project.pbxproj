@@ -26,6 +26,8 @@
 		4353B81F22C5E951004BD807 /* breakfastDEMO.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4353B81B22C5E8FC004BD807 /* breakfastDEMO.otf */; };
 		4353B82122C5FCC4004BD807 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4353B82022C5FCC3004BD807 /* Assets.xcassets */; };
 		4353B88422CCD348004BD807 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4353B88322CCD348004BD807 /* CameraController.swift */; };
+		4353B88622CD9AEF004BD807 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4353B88522CD9AEF004BD807 /* CameraViewController.swift */; };
+		4353B88822CD9F00004BD807 /* CameraResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4353B88722CD9F00004BD807 /* CameraResultViewController.swift */; };
 		8D2509C922C4CE74009A5A41 /* DetailMemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D2509C822C4CE74009A5A41 /* DetailMemoViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +52,8 @@
 		4353B81C22C5E8FC004BD807 /* Binggrae.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Binggrae.otf; sourceTree = "<group>"; };
 		4353B82022C5FCC3004BD807 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4353B88322CCD348004BD807 /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
+		4353B88522CD9AEF004BD807 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		4353B88722CD9F00004BD807 /* CameraResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraResultViewController.swift; sourceTree = "<group>"; };
 		6E1F3F259C18C7104FEEC827 /* Pods_SmartNote.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SmartNote.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D2509C822C4CE74009A5A41 /* DetailMemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMemoViewController.swift; sourceTree = "<group>"; };
 		D7B6A93DF23AF7CBA28AB018 /* Pods-SmartNote.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SmartNote.release.xcconfig"; path = "Target Support Files/Pods-SmartNote/Pods-SmartNote.release.xcconfig"; sourceTree = "<group>"; };
@@ -120,6 +124,8 @@
 		43017B4B22C342C2001B7D69 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				4353B88522CD9AEF004BD807 /* CameraViewController.swift */,
+				4353B88722CD9F00004BD807 /* CameraResultViewController.swift */,
 				43017B4822C3429E001B7D69 /* MemoViewController.swift */,
 				43017B5122C36772001B7D69 /* MemoListViewController.swift */,
 				8D2509C822C4CE74009A5A41 /* DetailMemoViewController.swift */,
@@ -308,8 +314,10 @@
 				43017B5022C36700001B7D69 /* MemoListCell.swift in Sources */,
 				43017B5722C37CF4001B7D69 /* GoogleCloudOCR.swift in Sources */,
 				43017B5522C37C9E001B7D69 /* GoogleCloudOCRModel.swift in Sources */,
+				4353B88622CD9AEF004BD807 /* CameraViewController.swift in Sources */,
 				4353B88422CCD348004BD807 /* CameraController.swift in Sources */,
 				43017B7822C38BC4001B7D69 /* UIExtension.swift in Sources */,
+				4353B88822CD9F00004BD807 /* CameraResultViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
