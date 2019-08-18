@@ -6,13 +6,8 @@
 //  Copyright © 2019 Alex Lee. All rights reserved.
 //
 
-import Foundation
-import CoreData
 
-
-
-
-
+// 번역api 언어별 키값
 /*
 
  한국어    kr

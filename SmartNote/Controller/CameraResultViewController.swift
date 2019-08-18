@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import NVActivityIndicatorView
 
-class CameraResultViewController: UIViewController {
+class CameraResultViewController: UIViewController, NVActivityIndicatorViewable {
     
     let cameraResultImageView = UIImageView()
     
@@ -17,6 +18,8 @@ class CameraResultViewController: UIViewController {
     let cancelBtn = UIButton()
     
     var capturedImage = UIImage()
+    
+    let notiCenter = NotificationCenter.default
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,10 +40,6 @@ class CameraResultViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        print("--------------------------[ViewWill Disappear]--------------------------")
-        
-//        guard let priorVC = self.presentingViewController as? CameraViewController else { print("변환 실패"); return }
-//        priorVC.dismiss(animated: false, completion: nil)
     }
     
     private func setAutoLayout() {
@@ -106,28 +105,64 @@ class CameraResultViewController: UIViewController {
         switch sender.currentTitle {
         case "Cancel":
             print("Cancel")
-            guard let priorVC = self.presentingViewController as? CameraViewController else { print("변환 실패"); return }
+            guard let cameraVC = self.presentingViewController as? CameraViewController else { print("변환 실패"); return }
             dismiss(animated: true)
             
-            priorVC.modalPresentationStyle = .overCurrentContext
-            priorVC.view.alpha = 0
-            priorVC.dismiss(animated: false, completion: nil)
+            cameraVC.modalPresentationStyle = .overCurrentContext
+            cameraVC.view.alpha = 0
+            cameraVC.dismiss(animated: false, completion: nil)
+        
             
             
         case "OK":
             print("OK")
-            guard let priorVC = self.presentingViewController as? CameraViewController else { print("변환 실패"); return }
-            dismiss(animated: true)
+            guard let cameraVC = self.presentingViewController as? CameraViewController
+                , let naviVC = cameraVC.presentingViewController as? UINavigationController
+                , let memoVC = naviVC.viewControllers.first as? MemoViewController else {
+                    print("OK버튼 변환 실패")
+                    return
+            }
             
-            priorVC.modalPresentationStyle = .overCurrentContext
-            priorVC.view.alpha = 0
-            priorVC.dismiss(animated: false, completion: nil)
+           
+            
+            guard let image = capturedImage.resize(to: view.frame.size) else {
+                print("‼️ caputredImage resize error ")
+                return
+            }
+            
+            
+            let activityData = ActivityData(size: CGSize(width: 50, height: 50), message: "Converting", messageFont: .systemFont(ofSize: 14), messageSpacing: 10, type: .ballScaleMultiple, color: .white)
+            NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                
+                GoogleCloudOCR().detect(from: image) { ocrResult in
+                    guard let ocrResult = ocrResult else { print("fixedImage ocrResult convert error!"); return }
+                    memoVC.memoView.textView.text = ocrResult.annotations.first?.text
+                    self.notiCenter.post(Notification(name: Notification.Name("textViewEditingEnd")))
+                    
+                    print("텍스트 추출 결과 / ocrResult: ", ocrResult)
+                    
+                    NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                    
+                    self.dismiss(animated: true)
+                    cameraVC.modalPresentationStyle = .overCurrentContext
+                    cameraVC.view.alpha = 0
+                    cameraVC.dismiss(animated: false, completion: nil)
+                }
+                
+            }
+            
+            
         case "Retake":
             dismiss(animated: true, completion: nil)
+            
+            
             
         default: break
         }
     }
+ 
 
 
 }

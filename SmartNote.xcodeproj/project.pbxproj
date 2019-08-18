@@ -21,6 +21,7 @@
 		43017B7F22C49672001B7D69 /* MemoData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 43017B7D22C49672001B7D69 /* MemoData.xcdatamodeld */; };
 		43017B8822C4AEC0001B7D69 /* MemoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43017B8722C4AEC0001B7D69 /* MemoData.swift */; };
 		43017B9422C53042001B7D69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43017B9322C53042001B7D69 /* Assets.xcassets */; };
+		433BB7CA2306ACA300283D42 /* ScreenshotDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433BB7C92306ACA300283D42 /* ScreenshotDetector.swift */; };
 		4353B81D22C5E94B004BD807 /* Binggrae.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4353B81C22C5E8FC004BD807 /* Binggrae.otf */; };
 		4353B81E22C5E94E004BD807 /* BMJUA_otf.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4353B81A22C5E8FB004BD807 /* BMJUA_otf.otf */; };
 		4353B81F22C5E951004BD807 /* breakfastDEMO.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4353B81B22C5E8FC004BD807 /* breakfastDEMO.otf */; };
@@ -47,6 +48,7 @@
 		43017B7E22C49672001B7D69 /* MemoData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MemoData.xcdatamodel; sourceTree = "<group>"; };
 		43017B8722C4AEC0001B7D69 /* MemoData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoData.swift; sourceTree = "<group>"; };
 		43017B9322C53042001B7D69 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		433BB7C92306ACA300283D42 /* ScreenshotDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotDetector.swift; sourceTree = "<group>"; };
 		4353B81A22C5E8FB004BD807 /* BMJUA_otf.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = BMJUA_otf.otf; sourceTree = "<group>"; };
 		4353B81B22C5E8FC004BD807 /* breakfastDEMO.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = breakfastDEMO.otf; sourceTree = "<group>"; };
 		4353B81C22C5E8FC004BD807 /* Binggrae.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Binggrae.otf; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 		43017B4A22C342BE001B7D69 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				433BB7C92306ACA300283D42 /* ScreenshotDetector.swift */,
 				4353B88322CCD348004BD807 /* CameraController.swift */,
 				43017B5422C37C9D001B7D69 /* GoogleCloudOCRModel.swift */,
 				43017B5622C37CF4001B7D69 /* GoogleCloudOCR.swift */,
@@ -276,20 +279,11 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SmartNote/Pods-SmartNote-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/DropDown/DropDown.framework",
-				"${BUILT_PRODUCTS_DIR}/RSSelectionMenu/RSSelectionMenu.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-SmartNote/Pods-SmartNote-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DropDown.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RSSelectionMenu.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-SmartNote/Pods-SmartNote-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -314,6 +308,7 @@
 				43017B5022C36700001B7D69 /* MemoListCell.swift in Sources */,
 				43017B5722C37CF4001B7D69 /* GoogleCloudOCR.swift in Sources */,
 				43017B5522C37C9E001B7D69 /* GoogleCloudOCRModel.swift in Sources */,
+				433BB7CA2306ACA300283D42 /* ScreenshotDetector.swift in Sources */,
 				4353B88622CD9AEF004BD807 /* CameraViewController.swift in Sources */,
 				4353B88422CCD348004BD807 /* CameraController.swift in Sources */,
 				43017B7822C38BC4001B7D69 /* UIExtension.swift in Sources */,

@@ -23,10 +23,6 @@ class MemoViewController: UIViewController {
     let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     var interactionController: UIPercentDrivenInteractiveTransition?
-    
-//    override func loadView() {
-//        view = memoView
-//    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -261,10 +257,14 @@ class MemoViewController: UIViewController {
             
             
             //            transition.startProgress
+            
+//            navigationController?.view.layer.add(transition, forKey: kCATransition)
             view.window!.layer.add(transition, forKey: kCATransition)
             
             cameraVC.modalPresentationStyle = .overCurrentContext
             present(cameraVC, animated: false)
+//            navigationController?.pushViewController(cameraVC, animated: false)
+            
             
         default: break
         }
@@ -333,6 +333,20 @@ extension MemoViewController: UIImagePickerControllerDelegate, UINavigationContr
         dismiss(animated: true, completion: nil)
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -433,4 +447,9 @@ class PullDownAnimationController: NSObject, UIViewControllerAnimatedTransitioni
 
 class PresentationController: UIPresentationController {
     override var shouldRemovePresentersView: Bool { return true }
+}
+
+
+class custom: UINavigationController {
+    
 }

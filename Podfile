@@ -9,6 +9,6 @@ target 'SmartNote' do
   pod ‘Alamofire’, ‘~> 5.0.0-beta.5’
   pod 'RSSelectionMenu'
   pod 'DropDown'
-
+  pod 'NVActivityIndicatorView'
 
 end
