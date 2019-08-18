@@ -8,6 +8,11 @@
 
 import UIKit
 
+extension Notification.Name {
+    static let memoTextViewEditingDidBegin = Notification.Name("MemoTextViewEditingDidBegin")
+    static let memoTextViewEditingDidEnd = Notification.Name("MemoTextViewEditingDidEnd")
+}
+
 extension UITextView {
     func centerVertically() {
         let fittingSize = CGSize(width: bounds.width, height: CGFloat.greatestFiniteMagnitude)

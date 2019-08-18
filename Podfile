@@ -10,5 +10,6 @@ target 'SmartNote' do
   pod 'RSSelectionMenu'
   pod 'DropDown'
   pod 'NVActivityIndicatorView'
+  pod 'SnapKit', '~> 5.0.0'
 
 end

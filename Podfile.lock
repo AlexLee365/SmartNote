@@ -5,12 +5,14 @@ PODS:
     - NVActivityIndicatorView/Presenter (= 4.7.0)
   - NVActivityIndicatorView/Presenter (4.7.0)
   - RSSelectionMenu (6.0.3)
+  - SnapKit (5.0.0)
 
 DEPENDENCIES:
   - Alamofire (~> 5.0.0-beta.5)
   - DropDown
   - NVActivityIndicatorView
   - RSSelectionMenu
+  - SnapKit (~> 5.0.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -18,13 +20,15 @@ SPEC REPOS:
     - DropDown
     - NVActivityIndicatorView
     - RSSelectionMenu
+    - SnapKit
 
 SPEC CHECKSUMS:
   Alamofire: cd08a4402bd12cacd0c66f23fb12fec8d6b965e4
   DropDown: 8a2116376c1981888557f72ec2ffc9a5e0e456ec
   NVActivityIndicatorView: b19ddab2576f805cbe0fb2306cba3476e09a1dea
   RSSelectionMenu: decee83e020ee9d63e53995eb7f1ea5ca75f0667
+  SnapKit: fd22d10eb9aff484d79a8724eab922c1ddf89bcf
 
-PODFILE CHECKSUM: 3532175e34ff662f72935a45b69c73748f5c26a9
+PODFILE CHECKSUM: 7a73ffe46bcae8e3b6eaca10eb8b41d470e51eeb
 
 COCOAPODS: 1.7.5

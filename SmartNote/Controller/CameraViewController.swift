@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class CameraViewController: UIViewController {
     
@@ -37,7 +38,7 @@ class CameraViewController: UIViewController {
         print("CameraCapturePreView 좌표: ", cameraCapturePreview.frame.origin)
         
         cameraCaptureBtn.layer.borderColor = UIColor.white.cgColor
-        cameraCaptureBtn.layer.borderWidth = 2
+        cameraCaptureBtn.layer.borderWidth = 4
         cameraCaptureBtn.layer.cornerRadius = min(cameraCaptureBtn.frame.width, cameraCaptureBtn.frame.height) / 2
     }
     
@@ -57,6 +58,16 @@ class CameraViewController: UIViewController {
         cameraCaptureBtn.centerXAnchor.constraint(equalTo: safeGuide.centerXAnchor).isActive = true
         cameraCaptureBtn.widthAnchor.constraint(equalToConstant: 60).isActive = true
         cameraCaptureBtn.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        
+        let buttonWhiteCircleView = UIView()
+        cameraCaptureBtn.addSubview(buttonWhiteCircleView)
+        buttonWhiteCircleView.snp.makeConstraints { (make) in
+            make.centerX.centerY.equalToSuperview()
+            make.width.height.equalTo(48)
+        }
+        buttonWhiteCircleView.backgroundColor = .white
+        buttonWhiteCircleView.layer.cornerRadius = 24
+        buttonWhiteCircleView.isUserInteractionEnabled = false
         
         view.bringSubviewToFront(cameraCaptureBtn)
     }
@@ -83,7 +94,7 @@ class CameraViewController: UIViewController {
     
     @objc func respondToSwipeGesture() {
         let transition = CATransition()
-        transition.duration = 0.15
+        transition.duration = 0.22
         transition.type = CATransitionType.push
         transition.subtype = CATransitionSubtype.fromRight
         //        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeInEaseOut)

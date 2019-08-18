@@ -17,8 +17,9 @@ class MemoViewController: UIViewController {
     let memoView = MemoView()
     let notiCenter = NotificationCenter.default
     
-    let defaultRightBarBtn = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(rightBarBtnDidTap(_:)))
-    let completeRightBarBtn = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(rightBarBtnDidTap(_:)))
+    lazy var emptyRightBarBtn = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(rightBarBtnDidTap(_:)))
+    lazy var completeRightBarBtn = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(rightBarBtnDidTap(_:)))
+    lazy var saveRightBarBtn = UIBarButtonItem(title: "저장", style: .plain, target: self, action: #selector(rightBarBtnDidTap(_:)))
     
     let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -33,10 +34,14 @@ class MemoViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        memoView.textView.text = ""
         memoView.isTextViewHasText = false
-        memoView.saveInfoContainerView.layer.opacity = 0
-        memoView.isSaved = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        memoView.textView.text = ""
+        memoView.hideSaveInfoContainerView()
+        navigationItem.rightBarButtonItem = emptyRightBarBtn
     }
     
     private func setAutoLayout() {
@@ -58,7 +63,7 @@ class MemoViewController: UIViewController {
         memoView.cameraBtn.addTarget(self, action: #selector(cameraBtnDidTap(_:)), for: .touchUpInside)
         memoView.albumBtn.addTarget(self, action: #selector(albumBtnDidTap(_:)), for: .touchUpInside)
 
-        navigationItem.rightBarButtonItem = defaultRightBarBtn
+        navigationItem.rightBarButtonItem = emptyRightBarBtn
         
         let swipeFromRight = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(_:)))
         swipeFromRight.direction = .right
@@ -66,80 +71,37 @@ class MemoViewController: UIViewController {
         let swipeFromLeft = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(_:)))
         swipeFromLeft.direction = .left
         view.addGestureRecognizer(swipeFromLeft)
-        
-//        let panLeft = UIPanGestureRecognizer(target: self, action: #selector(handleGesture(_:)))
-//        view.addGestureRecognizer(panLeft)
-        
     }
     
-//    @objc func handleGesture(_ gesture: UIPanGestureRecognizer) {
-//        let translate = gesture.translation(in: gesture.view)
-//        let percent   = translate.x / gesture.view!.bounds.size.width
-//        guard percent >= 0 else {
-//            print(percent)
-//            let memoListVC = MemoListViewController()
-//            navigationController?.pushViewController(memoListVC, animated: true)
-//            return
-//        }
-//
-//        if gesture.state == .began {
-//            let cameraVC = CameraViewController()
-//            interactionController = UIPercentDrivenInteractiveTransition()
-//            cameraVC.customTransitionDelegate.interactionController = interactionController
-//
-//            present(cameraVC, animated: true)
-////            show(cameraVC, sender: self)
-//        } else if gesture.state == .changed {
-//            print("🔵🔵🔵 : ", percent)
-//
-//            interactionController?.update(percent)
-//            view.superview!.superview!.superview!.frame.origin.x = +(view.frame.size.width * percent)
-//        } else if gesture.state == .ended || gesture.state == .cancelled {
-//            let velocity = gesture.velocity(in: gesture.view)
-//            if (percent > 0.5 && velocity.x == 0) || velocity.x > 0 {
-//                interactionController?.finish()
-//            } else {
-//                interactionController?.cancel()
-//            }
-//            interactionController = nil
-//        }
-//    }
-    
     func addNotificationObserver() {
-        notiCenter.addObserver(self, selector: #selector(didReceiveNotification(_:)), name: NSNotification.Name("textViewEditing"), object: nil)
-        notiCenter.addObserver(self, selector: #selector(didReceiveNotification(_:)), name: NSNotification.Name("textViewEditingEnd"), object: nil)
-        notiCenter.addObserver(self, selector: #selector(didReceiveNotification(_:)), name: NSNotification.Name("textViewEditingEndButEmpty"), object: nil)
+        notiCenter.addObserver(self, selector: #selector(didReceiveNotification(_:)), name: .memoTextViewEditingDidBegin, object: nil)
+        notiCenter.addObserver(self, selector: #selector(didReceiveNotification(_:)), name: .memoTextViewEditingDidEnd, object: nil)
     }
     
     @objc func didReceiveNotification(_ sender: Notification) {
         switch sender.name {
-        case Notification.Name("textViewEditing") :
+        case .memoTextViewEditingDidBegin:
             print("textViewEditing")
             navigationItem.rightBarButtonItem = completeRightBarBtn
-           
-        case Notification.Name("textViewEditingEnd"):
-            print("textViewEditingEnd")
-            let saveRightBarBtn = UIBarButtonItem(title: "저장", style: .plain, target: self, action: #selector(rightBarBtnDidTap(_:)))
-            navigationItem.rightBarButtonItem = saveRightBarBtn
             
-            memoView.isTextViewHasText = true
-            
-            memoView.textView.centerVertically()
-            if let language = NSLinguisticTagger.dominantLanguage(for: self.memoView.textView.text) {
-                print(language)
-            } else {
-                print("Unkown language")
-            }
+        case .memoTextViewEditingDidEnd:
+            if memoView.textView.hasText {  // 텍스트 입력 종료 후 텍스트가 있을 때
+                print("textViewEditingEnd")
+                memoView.isTextViewHasText = true
+                memoView.textView.centerVertically()
 
-        case Notification.Name("textViewEditingEndButEmpty"):
-            print("textViewEditingEndButEmpty")
-            navigationItem.rightBarButtonItem = defaultRightBarBtn
-            
-            UIView.animate(withDuration: 0.5, animations: {
-                self.memoView.saveInfoContainerView.layer.opacity = 0
-            }) { (_) in
-                self.memoView.saveInfoContainerView.isHidden = true
-                self.memoView.isSaved = true
+                navigationItem.rightBarButtonItem = saveRightBarBtn
+    
+                if let language = NSLinguisticTagger.dominantLanguage(for: self.memoView.textView.text) {
+                    print(language)
+                } else {
+                    print("Unkown language")
+                }
+                
+            } else {                      // 텍스트 입력 종료 후 텍스트가 없을 때
+                print("textViewEditingEndButEmpty")
+                memoView.isTextViewHasText = false
+                navigationItem.rightBarButtonItem = emptyRightBarBtn
             }
             
         default : break
@@ -148,13 +110,29 @@ class MemoViewController: UIViewController {
     
     
     @objc func cameraBtnDidTap(_ sender: UIButton) {
-        if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            presentImagePickerController(withSourceType: .camera)
-        } else {
-            let alert = UIAlertController(title: "Camera Not Available", message: "A camera is not available. Please try picking an image from the image library instead.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            present(alert, animated: true, completion: nil)
-        }
+//        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+//            presentImagePickerController(withSourceType: .camera)
+//        } else {
+//            let alert = UIAlertController(title: "Camera Not Available", message: "A camera is not available. Please try picking an image from the image library instead.", preferredStyle: .alert)
+//            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+//            present(alert, animated: true, completion: nil)
+//        }
+        
+        let cameraVC = CameraViewController()
+        let transition = CATransition()
+        transition.duration = 0.22
+        transition.type = CATransitionType.moveIn
+        transition.subtype = CATransitionSubtype.fromTop
+        //        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeInEaseOut)
+        
+        
+        //            transition.startProgress
+        
+        //            navigationController?.view.layer.add(transition, forKey: kCATransition)
+        view.window!.layer.add(transition, forKey: kCATransition)
+        
+        cameraVC.modalPresentationStyle = .overCurrentContext
+        present(cameraVC, animated: false)
     }
     
     @objc func albumBtnDidTap(_ sender: UIButton) {
@@ -163,16 +141,11 @@ class MemoViewController: UIViewController {
     
     
     @objc func rightBarBtnDidTap(_ sender: UIBarButtonItem) {
-        
-        if navigationItem.rightBarButtonItem?.title == "저장" {  // 저장 버튼 클릭시
+        switch sender {
+        case saveRightBarBtn:
             print("--------------------------[저장버튼 클릭]--------------------------")
-            
-            memoView.saveInfoContainerView.isHidden = false
-            memoView.saveInfoContainerView.layer.opacity = 0
-            UIView.animate(withDuration: 0.5, animations: {
-                self.memoView.isSaved = true
-                self.memoView.saveInfoContainerView.layer.opacity = 1
-            })
+            memoView.showSaveInfoContainerView()
+            memoView.memoState = .saved
             
             // =================================== ===================================
             let date = Date()
@@ -223,11 +196,11 @@ class MemoViewController: UIViewController {
                 print("‼️‼️‼️ : ", error.localizedDescription)
             }
             
-            
-            
-        } else {    // 완료 버튼 클릭시
+        case completeRightBarBtn:
             memoView.textView.resignFirstResponder()
             memoView.textView.centerVertically()
+            
+        default: break
         }
     }
     
@@ -248,9 +221,8 @@ class MemoViewController: UIViewController {
 //                present(alert, animated: true, completion: nil)
 //            }
             let cameraVC = CameraViewController()
-//            navigationController?.pushViewController(cameraVC, animated: true)
             let transition = CATransition()
-            transition.duration = 0.15
+            transition.duration = 0.22
             transition.type = CATransitionType.push
             transition.subtype = CATransitionSubtype.fromLeft
             //        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeInEaseOut)
@@ -263,18 +235,10 @@ class MemoViewController: UIViewController {
             
             cameraVC.modalPresentationStyle = .overCurrentContext
             present(cameraVC, animated: false)
-//            navigationController?.pushViewController(cameraVC, animated: false)
-            
-            
+
         default: break
         }
-        
-        
-      
-        
-       
     }
-    
 }
 
 extension MemoViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -317,7 +281,6 @@ extension MemoViewController: UIImagePickerControllerDelegate, UINavigationContr
                 guard let ocrResult = ocrResult else { print("fixedImage ocrResult convert error!"); return }
                 print("viewcontroller ocrResult: ", ocrResult)
                 
-                var text = ""
                 self.memoView.textView.text = ocrResult.annotations.first?.text
 //                ocrResult.annotations.forEach{
 //                    print("$$")
@@ -326,7 +289,7 @@ extension MemoViewController: UIImagePickerControllerDelegate, UINavigationContr
 //                    self.memoView.textView.text = text
 //                    print(text)
 //                }
-                self.notiCenter.post(Notification(name: Notification.Name("textViewEditingEnd")))
+                self.notiCenter.post(name: .memoTextViewEditingDidEnd, object: nil)
             }
         }
         

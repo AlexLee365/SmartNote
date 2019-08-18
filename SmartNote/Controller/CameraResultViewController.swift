@@ -20,7 +20,7 @@ class CameraResultViewController: UIViewController, NVActivityIndicatorViewable 
     var capturedImage = UIImage()
     
     let notiCenter = NotificationCenter.default
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("--------------------------[CameraResultVC view did load]--------------------------")
@@ -34,7 +34,7 @@ class CameraResultViewController: UIViewController, NVActivityIndicatorViewable 
         print("SafeInset: ", view.safeAreaInsets)
         print(self.presentingViewController)
         guard let priorVC = self.presentingViewController as? CameraViewController else { print("변환 실패"); return }
-//        priorVC.dismiss(animated: false, completion: nil)
+        //        priorVC.dismiss(animated: false, completion: nil)
         
     }
     
@@ -102,8 +102,8 @@ class CameraResultViewController: UIViewController, NVActivityIndicatorViewable 
     }
     
     @objc func bottomBtnDidTap(_ sender: UIButton) {
-        switch sender.currentTitle {
-        case "Cancel":
+        switch sender {
+        case cancelBtn:
             print("Cancel")
             guard let cameraVC = self.presentingViewController as? CameraViewController else { print("변환 실패"); return }
             dismiss(animated: true)
@@ -111,10 +111,10 @@ class CameraResultViewController: UIViewController, NVActivityIndicatorViewable 
             cameraVC.modalPresentationStyle = .overCurrentContext
             cameraVC.view.alpha = 0
             cameraVC.dismiss(animated: false, completion: nil)
-        
             
             
-        case "OK":
+            
+        case okBtn:
             print("OK")
             guard let cameraVC = self.presentingViewController as? CameraViewController
                 , let naviVC = cameraVC.presentingViewController as? UINavigationController
@@ -123,38 +123,32 @@ class CameraResultViewController: UIViewController, NVActivityIndicatorViewable 
                     return
             }
             
-           
-            
             guard let image = capturedImage.resize(to: view.frame.size) else {
                 print("‼️ caputredImage resize error ")
                 return
             }
             
-            
             let activityData = ActivityData(size: CGSize(width: 50, height: 50), message: "Converting", messageFont: .systemFont(ofSize: 14), messageSpacing: 10, type: .ballScaleMultiple, color: .white)
             NVActivityIndicatorPresenter.sharedInstance.startAnimating(activityData)
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            GoogleCloudOCR().detect(from: image) { ocrResult in
+                guard let ocrResult = ocrResult else { print("fixedImage ocrResult convert error!"); return }
+                memoVC.memoView.textView.text = ocrResult.annotations.first?.text
+                self.notiCenter.post(name: .memoTextViewEditingDidEnd, object: nil)
                 
-                GoogleCloudOCR().detect(from: image) { ocrResult in
-                    guard let ocrResult = ocrResult else { print("fixedImage ocrResult convert error!"); return }
-                    memoVC.memoView.textView.text = ocrResult.annotations.first?.text
-                    self.notiCenter.post(Notification(name: Notification.Name("textViewEditingEnd")))
-                    
-                    print("텍스트 추출 결과 / ocrResult: ", ocrResult)
-                    
-                    NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
-                    
-                    self.dismiss(animated: true)
-                    cameraVC.modalPresentationStyle = .overCurrentContext
-                    cameraVC.view.alpha = 0
-                    cameraVC.dismiss(animated: false, completion: nil)
-                }
+                print("텍스트 추출 결과 / ocrResult: ", ocrResult)
                 
+                NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+                
+                self.dismiss(animated: true)
+                cameraVC.modalPresentationStyle = .overCurrentContext
+                cameraVC.view.alpha = 0
+                cameraVC.dismiss(animated: false, completion: nil)
             }
             
             
-        case "Retake":
+            
+        case retakeBtn:
             dismiss(animated: true, completion: nil)
             
             
@@ -162,7 +156,7 @@ class CameraResultViewController: UIViewController, NVActivityIndicatorViewable 
         default: break
         }
     }
- 
-
-
+    
+    
+    
 }
