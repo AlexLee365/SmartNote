@@ -10,6 +10,10 @@ import UIKit
 import SnapKit
 
 class CameraViewController: UIViewController {
+    enum DismissDirectionType {
+        case fromRight
+        case fromTop
+    }
     
     let cameraController = CameraController()
     
@@ -17,6 +21,20 @@ class CameraViewController: UIViewController {
     private let cameraCaptureBtn = UIButton()
     
     let customTransitionDelegate = TransitioningDelegate()
+    
+    var dismissDirection: CATransitionSubtype = .fromRight
+    var dismissGestureDirection: UISwipeGestureRecognizer.Direction = .left
+    var dismissTransitionType: CATransitionType = .push
+    
+    var dismissDirectionType: DismissDirectionType = .fromRight {
+        didSet {
+            if dismissDirectionType == .fromTop {
+                dismissDirection  = .fromBottom
+                dismissGestureDirection = .down
+                dismissTransitionType = .reveal
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +46,13 @@ class CameraViewController: UIViewController {
         
         modalPresentationStyle = .custom
         transitioningDelegate = customTransitionDelegate
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.setNeedsStatusBarAppearanceUpdate()
     }
     
     override func viewDidLayoutSubviews() {
@@ -40,6 +65,8 @@ class CameraViewController: UIViewController {
         cameraCaptureBtn.layer.borderColor = UIColor.white.cgColor
         cameraCaptureBtn.layer.borderWidth = 4
         cameraCaptureBtn.layer.cornerRadius = min(cameraCaptureBtn.frame.width, cameraCaptureBtn.frame.height) / 2
+        
+        
     }
     
     private func setAutoLayout() {
@@ -77,9 +104,9 @@ class CameraViewController: UIViewController {
         
         cameraCaptureBtn.addTarget(self, action: #selector(captureImage(_:)), for: .touchUpInside)
         
-        let swipeFromLeft = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture))
-        swipeFromLeft.direction = .left
-        view.addGestureRecognizer(swipeFromLeft)
+        let dismissSwipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture))
+        dismissSwipeGesture.direction = dismissGestureDirection
+        view.addGestureRecognizer(dismissSwipeGesture)
     }
     
     private func configureCameraController() {
@@ -95,12 +122,16 @@ class CameraViewController: UIViewController {
     @objc func respondToSwipeGesture() {
         let transition = CATransition()
         transition.duration = 0.22
-        transition.type = CATransitionType.push
-        transition.subtype = CATransitionSubtype.fromRight
+        transition.type = dismissTransitionType
+        transition.subtype = dismissDirection
         //        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeInEaseOut)
         view.window!.layer.add(transition, forKey: kCATransition)
         
         dismiss(animated: false, completion: nil)
+        print(presentingViewController)
+        if let naviVC = presentingViewController as? UINavigationController {
+            naviVC.navigationBar.barStyle = .default
+        }
     }
     
     

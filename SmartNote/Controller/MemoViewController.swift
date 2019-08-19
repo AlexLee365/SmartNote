@@ -13,18 +13,18 @@ import CoreData
 
 class MemoViewController: UIViewController {
     
-    // MARK: - Properties
+    // MARK: - UI Properties
     let memoView = MemoView()
-    let notiCenter = NotificationCenter.default
-    
     lazy var emptyRightBarBtn = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(rightBarBtnDidTap(_:)))
     lazy var completeRightBarBtn = UIBarButtonItem(title: "완료", style: .plain, target: self, action: #selector(rightBarBtnDidTap(_:)))
     lazy var saveRightBarBtn = UIBarButtonItem(title: "저장", style: .plain, target: self, action: #selector(rightBarBtnDidTap(_:)))
     
+    // MARK: - Properties
     let managedObjectContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    let notiCenter = NotificationCenter.default
     
     var interactionController: UIPercentDrivenInteractiveTransition?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setAutoLayout()
@@ -132,6 +132,8 @@ class MemoViewController: UIViewController {
         view.window!.layer.add(transition, forKey: kCATransition)
         
         cameraVC.modalPresentationStyle = .overCurrentContext
+        cameraVC.dismissDirectionType = .fromTop
+        navigationController?.navigationBar.barStyle = .blackTranslucent
         present(cameraVC, animated: false)
     }
     
@@ -234,6 +236,7 @@ class MemoViewController: UIViewController {
             view.window!.layer.add(transition, forKey: kCATransition)
             
             cameraVC.modalPresentationStyle = .overCurrentContext
+            navigationController?.navigationBar.barStyle = .blackTranslucent
             present(cameraVC, animated: false)
 
         default: break

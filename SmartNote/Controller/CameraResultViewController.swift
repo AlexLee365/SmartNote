@@ -21,6 +21,10 @@ class CameraResultViewController: UIViewController, NVActivityIndicatorViewable 
     
     let notiCenter = NotificationCenter.default
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("--------------------------[CameraResultVC view did load]--------------------------")
@@ -105,7 +109,12 @@ class CameraResultViewController: UIViewController, NVActivityIndicatorViewable 
         switch sender {
         case cancelBtn:
             print("Cancel")
-            guard let cameraVC = self.presentingViewController as? CameraViewController else { print("변환 실패"); return }
+            guard let cameraVC = self.presentingViewController as? CameraViewController
+                , let naviVC = cameraVC.presentingViewController as? UINavigationController else {
+                    print("변환 실패")
+                    return
+            }
+            naviVC.navigationBar.barStyle = .default
             dismiss(animated: true)
             
             cameraVC.modalPresentationStyle = .overCurrentContext
@@ -144,6 +153,8 @@ class CameraResultViewController: UIViewController, NVActivityIndicatorViewable 
                 cameraVC.modalPresentationStyle = .overCurrentContext
                 cameraVC.view.alpha = 0
                 cameraVC.dismiss(animated: false, completion: nil)
+                
+                naviVC.navigationBar.barStyle = .default
             }
             
             

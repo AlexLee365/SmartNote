@@ -26,19 +26,19 @@ class MemoView: UIView {
     let saveInfoImageView = UIImageView()
     let saveInfoLabel = UILabel()
     
-    let bottomBackgroundUIView = UIView()
+    let bottomSeparateLineView = UIView()
     let albumBtn = UIButton()
     let cameraBtn = UIButton()
     
-    let galleryLabel = UILabel()
+    let albumLabel = UILabel()
     let cameraLabel = UILabel()
     let translateBtn = UIButton()
     
     let translateContainerView = UIView()
     let translateFromBtn = UIButton()
-    let underlineUIView = UIView()
-    let underlineUIView2 = UIView()
     let translateToBtn = UIButton()
+    let translateNoticeView = UIView()
+    let translateNoticeLabel = UILabel()
     
     // MARK: - Properties
     var isTextViewHasText = false {
@@ -77,6 +77,8 @@ class MemoView: UIView {
     var dropDownTransFrom = DropDown()
     var dropDownTransTo = DropDown()
     
+    let notiCenter = NotificationCenter.default
+    
     let translateLanguageArray = ["Korean", "English", "Chinese", "Japanese"]
     
     override init(frame: CGRect) {
@@ -86,25 +88,104 @@ class MemoView: UIView {
         configureViewsOptions()
     }
     
-    let notiCenter = NotificationCenter.default
+    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     private func setAutoLayout() {
-        print("--------------------------[MemoView setAutoLayout]--------------------------")
-        
         let buttonSpacing: CGFloat = 90
         let buttonSize: CGFloat = 80
         
+        // =================================== 하단 버튼 ===================================
+        self.addSubview(bottomSeparateLineView)
+        bottomSeparateLineView.translatesAutoresizingMaskIntoConstraints = false
+        bottomSeparateLineView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1).isActive = true
+        //        bottomBackgroundUIView.topAnchor.constraint(equalTo: translateContainerView.bottomAnchor, constant: 30).isActive = true
+        bottomSeparateLineView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -UIScreen.main.bounds.height * 0.12).isActive = true
+        bottomSeparateLineView.heightAnchor.constraint(equalToConstant: 1.5).isActive = true
+        
+        self.addSubview(albumBtn)
+        albumBtn.translatesAutoresizingMaskIntoConstraints = false
+        albumBtn.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: -buttonSpacing).isActive = true
+        albumBtn.centerYAnchor.constraint(equalTo: bottomSeparateLineView.bottomAnchor, constant: 30).isActive = true
+        albumBtn.widthAnchor.constraint(equalToConstant: buttonSize).isActive = true
+        albumBtn.heightAnchor.constraint(equalToConstant: buttonSize).isActive = true
+        
+        self.addSubview(albumLabel)
+        albumLabel.translatesAutoresizingMaskIntoConstraints = false
+        albumLabel.centerXAnchor.constraint(equalTo: albumBtn.centerXAnchor, constant: 0).isActive = true
+        albumLabel.bottomAnchor.constraint(equalTo: albumBtn.bottomAnchor, constant: -3).isActive = true
+        
+        self.addSubview(cameraBtn)
+        cameraBtn.translatesAutoresizingMaskIntoConstraints = false
+        cameraBtn.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: buttonSpacing).isActive = true
+        cameraBtn.centerYAnchor.constraint(equalTo: albumBtn.centerYAnchor).isActive = true
+        cameraBtn.widthAnchor.constraint(equalToConstant: buttonSize).isActive = true
+        cameraBtn.heightAnchor.constraint(equalToConstant: buttonSize).isActive = true
+        
+        self.addSubview(cameraLabel)
+        cameraLabel.translatesAutoresizingMaskIntoConstraints = false
+        cameraLabel.centerXAnchor.constraint(equalTo: cameraBtn.centerXAnchor, constant: 0).isActive = true
+        cameraLabel.bottomAnchor.constraint(equalTo: cameraBtn.bottomAnchor, constant: -3).isActive = true
+        
+        // =================================== TranslateContainerView ===================================
+        self.addSubview(translateContainerView)
+        translateContainerView.translatesAutoresizingMaskIntoConstraints = false
+        translateContainerView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        translateContainerView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.90).isActive = true
+        translateContainerView.bottomAnchor.constraint(equalTo: bottomSeparateLineView.topAnchor, constant: -15).isActive = true
+//        translateContainerView.topAnchor.constraint(equalTo: textContainerView.bottomAnchor, constant: 35).isActive = true
+        translateContainerView.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        
+        translateContainerView.addSubview(translateBtn)
+        translateBtn.translatesAutoresizingMaskIntoConstraints = false
+        translateBtn.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        translateBtn.centerYAnchor.constraint(equalTo: translateContainerView.centerYAnchor, constant: 0).isActive = true
+        translateBtn.heightAnchor.constraint(equalTo: translateContainerView.heightAnchor, multiplier: 0.6).isActive = true
+        translateBtn.widthAnchor.constraint(equalTo: translateBtn.heightAnchor, multiplier: 1).isActive = true
+        
+        translateContainerView.addSubview(translateFromBtn)
+        translateFromBtn.translatesAutoresizingMaskIntoConstraints = false
+        translateFromBtn.centerXAnchor.constraint(equalTo: translateContainerView.centerXAnchor, constant: -90).isActive = true
+        translateFromBtn.centerYAnchor.constraint(equalTo: translateContainerView.centerYAnchor).isActive = true
+        translateFromBtn.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        translateFromBtn.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        translateContainerView.addSubview(translateToBtn)
+        translateToBtn.translatesAutoresizingMaskIntoConstraints = false
+        translateToBtn.centerXAnchor.constraint(equalTo: translateContainerView.centerXAnchor, constant: 90).isActive = true
+        translateToBtn.centerYAnchor.constraint(equalTo: translateContainerView.centerYAnchor).isActive = true
+        translateToBtn.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        translateToBtn.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+        self.addSubview(translateNoticeView)
+        translateNoticeView.snp.makeConstraints { (make) in
+            make.leading.equalTo(translateContainerView.snp.leading)
+            make.bottom.equalTo(translateContainerView.snp.top).offset(10)
+            make.width.equalTo(70)
+            make.height.equalTo(30)
+        }
+        
+        translateNoticeView.addSubview(translateNoticeLabel)
+        translateNoticeLabel.snp.makeConstraints { (make) in
+//            make.leading.equalTo(5)
+            make.centerX.equalToSuperview()
+            make.top.equalTo(3)
+        }
+        
+        self.sendSubviewToBack(translateNoticeView)
+        
+        // =================================== TextContainerView ===================================
         let margin: CGFloat = 10
         self.addSubview(textContainerView)
         textContainerView.translatesAutoresizingMaskIntoConstraints = false
         textContainerView.topAnchor.constraint(equalTo: self.topAnchor, constant: margin).isActive = true
         textContainerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: margin).isActive = true
         textContainerView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -margin).isActive = true
-        textContainerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -250).isActive = true
+        textContainerView.bottomAnchor.constraint(equalTo: translateNoticeView.topAnchor, constant: -10).isActive = true
+//        textContainerView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.62).isActive = true
         
         textContainerView.addSubview(textView)
         textView.translatesAutoresizingMaskIntoConstraints = false
@@ -118,7 +199,7 @@ class MemoView: UIView {
         textViewPlaceHolderLabel.centerXAnchor.constraint(equalTo: textView.centerXAnchor).isActive = true
         textViewPlaceHolderLabel.centerYAnchor.constraint(equalTo: textView.centerYAnchor).isActive = true
         
-        // =================================== 저장된 정보 ContainerView ===================================
+        // 저장된 정보 ContainerView
         textContainerView.addSubview(saveInfoContainerView)
         saveInfoContainerView.translatesAutoresizingMaskIntoConstraints = false
         saveInfoContainerView.topAnchor.constraint(equalTo: textContainerView.topAnchor, constant: 5).isActive = true
@@ -142,72 +223,12 @@ class MemoView: UIView {
         saveInfoImageView.topAnchor.constraint(equalTo: saveInfoContainerView.topAnchor).isActive = true
         saveInfoImageView.widthAnchor.constraint(equalToConstant: 20).isActive = true
         saveInfoImageView.heightAnchor.constraint(equalTo: saveInfoImageView.widthAnchor, multiplier: 1).isActive = true
-        
-        // =================================== translateContainerView ===================================
-        self.addSubview(translateContainerView)
-        translateContainerView.translatesAutoresizingMaskIntoConstraints = false
-        translateContainerView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        translateContainerView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -120).isActive = true
-        translateContainerView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.90).isActive = true
-        translateContainerView.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        
-        translateContainerView.addSubview(translateBtn)
-        translateBtn.translatesAutoresizingMaskIntoConstraints = false
-        translateBtn.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        translateBtn.centerYAnchor.constraint(equalTo: translateContainerView.centerYAnchor, constant: 0).isActive = true
-        translateBtn.widthAnchor.constraint(equalToConstant: buttonSize-15).isActive = true
-        translateBtn.heightAnchor.constraint(equalToConstant: buttonSize-15).isActive = true
-        
-        translateContainerView.addSubview(translateFromBtn)
-        translateFromBtn.translatesAutoresizingMaskIntoConstraints = false
-        translateFromBtn.centerXAnchor.constraint(equalTo: translateContainerView.centerXAnchor, constant: -90).isActive = true
-        translateFromBtn.centerYAnchor.constraint(equalTo: translateContainerView.centerYAnchor).isActive = true
-        translateFromBtn.widthAnchor.constraint(equalToConstant: 70).isActive = true
-        translateFromBtn.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        
-        translateContainerView.addSubview(translateToBtn)
-        translateToBtn.translatesAutoresizingMaskIntoConstraints = false
-        translateToBtn.centerXAnchor.constraint(equalTo: translateContainerView.centerXAnchor, constant: 90).isActive = true
-        translateToBtn.centerYAnchor.constraint(equalTo: translateContainerView.centerYAnchor).isActive = true
-        translateToBtn.widthAnchor.constraint(equalToConstant: 70).isActive = true
-        translateToBtn.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        
-        // =================================== 하단 버튼 ===================================
-        self.addSubview(bottomBackgroundUIView)
-        bottomBackgroundUIView.translatesAutoresizingMaskIntoConstraints = false
-        bottomBackgroundUIView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1).isActive = true
-        //        bottomBackgroundUIView.topAnchor.constraint(equalTo: translateContainerView.bottomAnchor, constant: 30).isActive = true
-        bottomBackgroundUIView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -100).isActive = true
-        bottomBackgroundUIView.heightAnchor.constraint(equalToConstant: 0.8).isActive = true
-        
-        self.addSubview(albumBtn)
-        albumBtn.translatesAutoresizingMaskIntoConstraints = false
-        albumBtn.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: -buttonSpacing).isActive = true
-        albumBtn.centerYAnchor.constraint(equalTo: bottomBackgroundUIView.bottomAnchor, constant: 30).isActive = true
-        albumBtn.widthAnchor.constraint(equalToConstant: buttonSize).isActive = true
-        albumBtn.heightAnchor.constraint(equalToConstant: buttonSize).isActive = true
-        
-        self.addSubview(galleryLabel)
-        galleryLabel.translatesAutoresizingMaskIntoConstraints = false
-        galleryLabel.centerXAnchor.constraint(equalTo: albumBtn.centerXAnchor, constant: 0).isActive = true
-        galleryLabel.bottomAnchor.constraint(equalTo: albumBtn.bottomAnchor, constant: -3).isActive = true
-        
-        self.addSubview(cameraBtn)
-        cameraBtn.translatesAutoresizingMaskIntoConstraints = false
-        cameraBtn.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: buttonSpacing).isActive = true
-        cameraBtn.centerYAnchor.constraint(equalTo: albumBtn.centerYAnchor).isActive = true
-        cameraBtn.widthAnchor.constraint(equalToConstant: buttonSize).isActive = true
-        cameraBtn.heightAnchor.constraint(equalToConstant: buttonSize).isActive = true
-        
-        self.addSubview(cameraLabel)
-        cameraLabel.translatesAutoresizingMaskIntoConstraints = false
-        cameraLabel.centerXAnchor.constraint(equalTo: cameraBtn.centerXAnchor, constant: 0).isActive = true
-        cameraLabel.bottomAnchor.constraint(equalTo: cameraBtn.bottomAnchor, constant: -3).isActive = true
     }
     
     private func configureViewsOptions() {
         print("--------------------------[MemoView configureViewOptions]--------------------------")
         textContainerView.backgroundColor = #colorLiteral(red: 0.9764593244, green: 0.9706541896, blue: 0.9809214473, alpha: 1)
+        textContainerView.layer.cornerRadius = 10
         textContainerView.layer.shadowColor = UIColor.gray.cgColor
         textContainerView.layer.shadowOpacity = 0.8
         textContainerView.layer.shadowOffset = CGSize(width: 2, height: 2)
@@ -225,47 +246,44 @@ class MemoView: UIView {
         saveInfoLabel.font = .systemFont(ofSize: 11, weight: .semibold)
         saveInfoLabel.textColor = #colorLiteral(red: 0.6031692624, green: 0.5995866656, blue: 0.6059251428, alpha: 0.903119649)
         
-        bottomBackgroundUIView.backgroundColor = UIColor(red:0.50, green:0.87, blue:0.92, alpha:1.0)
+        // =================================== 하단 버튼 ===================================
+        bottomSeparateLineView.backgroundColor = UIColor(red:0.50, green:0.87, blue:0.92, alpha:1.0)
         
-        //        albumBtn.backgroundColor = UIColor(red:0.00, green:0.38, blue:0.39, alpha:1)
-        albumBtn.setImage(UIImage(named: "gallery_gray"), for: .normal)
-        //        albumBtn.layer.shadowColor = UIColor.gray.cgColor
-        //        albumBtn.layer.shadowOpacity = 0.8
-        //        albumBtn.layer.shadowOffset = CGSize(width: 2, height: 2)
-        //        albumBtn.layer.shadowRadius = 0.2
-        //        albumBtn.imageEdgeInsets = UIEdgeInsets(top: -5, left: 0, bottom: 5, right: 0)
+        let albumInset: CGFloat = 24
+        albumBtn.setImage(UIImage(named: "AlbumSample3"), for: .normal)
+        albumBtn.imageView?.contentMode = .scaleAspectFit
+        albumBtn.imageEdgeInsets = .init(top: albumInset, left: albumInset, bottom: albumInset, right: albumInset)
         
-        //        globeButton.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).CGColor
-        //        globeButton.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
-        //        globeButton.layer.shadowOpacity = 1.0
-        //        globeButton.layer.shadowRadius = 0.0
-        //        globeButton.layer.masksToBounds = false
+        albumLabel.text = "Album"
+        albumLabel.font = .systemFont(ofSize: 12, weight: .medium)
+        albumLabel.textColor = UIColor(red:0.40, green:0.40, blue:0.40, alpha:1.0)
+//        albumLabel.textColor = .black
         
-        galleryLabel.text = "앨범"
-        galleryLabel.font = .systemFont(ofSize: 12, weight: .medium)
-        galleryLabel.textColor = UIColor(red:0.40, green:0.40, blue:0.40, alpha:1.0)
         
-        cameraBtn.setImage(UIImage(named: "camera_gray"), for: .normal)
-        //        cameraBtn.layer.shadowColor = UIColor.gray.cgColor
-        //        cameraBtn.layer.shadowOpacity = 0.8
-        //        cameraBtn.layer.shadowOffset = CGSize(width: 2, height: 2)
-        //        cameraBtn.layer.shadowRadius = 0.2
-        //        cameraBtn.imageEdgeInsets = UIEdgeInsets(top: -5, left: 0, bottom: 5, right: 0)
+        let cameraInset: CGFloat = 20
+        cameraBtn.setImage(UIImage(named: "cameraSample3"), for: .normal)
+        cameraBtn.imageView?.contentMode = .scaleAspectFit
+        cameraBtn.imageEdgeInsets = UIEdgeInsets(top: cameraInset, left: cameraInset, bottom: cameraInset, right: cameraInset)
         
-        cameraLabel.text = "카메라"
+        cameraLabel.text = "Camera"
         cameraLabel.font = .systemFont(ofSize: 12, weight: .medium)
         cameraLabel.textColor = UIColor(red:0.40, green:0.40, blue:0.40, alpha:1.0)
+//        cameraLabel.textColor = .black
         
-        translateContainerView.backgroundColor = UIColor(red:0.00, green:0.67, blue:0.76, alpha:0.3)
-        //        translateContainerView.backgroundColor = .clear
+        
+        // =================================== TranslateContainerView ===================================
+//        translateContainerView.backgroundColor = UIColor(red:0.00, green:0.67, blue:0.76, alpha:0.3)
+//        translateContainerView.backgroundColor = UIColor(red:0.74, green:0.89, blue:0.92, alpha:1.0)
+        translateContainerView.backgroundColor = UIColor(red:0.64, green:0.88, blue:0.92, alpha:1.0)
+        translateContainerView.layer.cornerRadius = 5
         
         translateBtn.setImage(UIImage(named: "tranlsateIcon2"), for: .normal)
         translateBtn.addTarget(self, action: #selector(translateBtnDidTap(_:)), for: .touchUpInside)
+//        translateBtn.backgroundColor = .white
         
         translateFromBtn.setTitle("Korean", for: .normal)
         translateFromBtn.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
         translateFromBtn.setTitleColor(.black, for: .normal)
-        //        translateFromBtn.backgroundColor = .yellow
         translateFromBtn.tag = 0
         translateFromBtn.addTarget(self, action: #selector(translateDropDownBtnDidTap(_:)), for: .touchUpInside)
         
@@ -295,6 +313,12 @@ class MemoView: UIView {
             
             self.translateToBtn.setTitle(item, for: .normal)
         }
+        
+        translateNoticeView.backgroundColor = #colorLiteral(red: 0.9944962859, green: 0.5105027556, blue: 0.03178439289, alpha: 0.749411387)
+        translateNoticeView.layer.cornerRadius = 5
+        translateNoticeLabel.text = "Translate"
+        translateNoticeLabel.textColor = .black
+        translateNoticeLabel.font = .systemFont(ofSize: 10.5, weight: .semibold)
     }
     
     var autolayoutFlag = false
@@ -304,18 +328,12 @@ class MemoView: UIView {
         if autolayoutFlag == false {
             print(translateBtn.frame.size)
             
-            //            translateBtn.layer.cornerRadius = translateBtn.frame.width/2
-            //            translateBtn.imageView?.layer.cornerRadius = translateBtn.imageView!.frame.width/2
-            //            translateBtn.layer.masksToBounds = true
+//            albumBtn.layer.cornerRadius = albumBtn.frame.width/2
+//            cameraBtn.layer.cornerRadius = cameraBtn.frame.width/2
             
-            albumBtn.layer.cornerRadius = albumBtn.frame.width/2
-            textContainerView.layer.cornerRadius = 10
             
-            cameraBtn.layer.cornerRadius = cameraBtn.frame.width/2
-            
-            translateContainerView.layer.cornerRadius = 5
-            translateFromBtn.layer.cornerRadius = 10
-            translateToBtn.layer.cornerRadius = 10
+//            translateFromBtn.layer.cornerRadius = 10
+//            translateToBtn.layer.cornerRadius = 10
             
             autolayoutFlag = true
         }
